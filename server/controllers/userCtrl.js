@@ -1,9 +1,10 @@
 const { generateToken } = require("../config/jwtToken");
 const mongoose = require("mongoose");
 const User = require("../models/User");
-const { validationResult } = require("express-validator");
+const { validationResult, cookie } = require("express-validator");
 const { validateMongodbId } = require("../utils/validateMongodbId");
-// const { generateRefreshToken } = require("../config/refreshToken");
+const { generateRefreshToken } = require("../config/refreshToken");
+const jwt = require("jsonwebtoken");
 
 //ROUTE 1: CREATE A USER (REGISTER)
 const createUser = async (req, res) => {
@@ -60,18 +61,22 @@ const loginUser = async (req, res) => {
   }
   //   res.json(findUser)
 
-  // const refreshToken = await generateRefreshToken(findUser?._id); //refresh token generated
-  //update the refresh token
-  // const updateUser = await User.findByIdAndUpdate(
-  //   findUser?._id,
-  //   {
-  //     refreshToken: refreshToken,
-  //   },
-  //   {
-  //     new: true,
-  //   }
-  // );
+  const refreshToken = await generateRefreshToken(findUser?._id); //refresh token generated
+  // update the refresh token
+  const updateUser = await User.findByIdAndUpdate(
+    findUser?._id,
+    {
+      refreshToken: refreshToken,
+    },
+    {
+      new: true,
+    }
+  );
   // console.log(updateUser);
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    maxAge: 24 * 3 * 60 * 60 * 1000,
+  });
 
   res.json({
     _id: findUser?._id,
@@ -83,6 +88,70 @@ const loginUser = async (req, res) => {
   });
 };
 
+//ROUTE 9 : Handle refresh token
+const handleRefreshToken = async (req, res) => {
+  try {
+    const cookie = req.cookies;
+    // console.log(cookie);
+    if (!cookie?.refreshToken) {
+      res.status(400).json("No refresh token in cookies!");
+    }
+    const refreshToken = cookie?.refreshToken;
+    // console.log(refreshToken);
+    const user = await User.findOne({ refreshToken });
+    //  console.log(user);
+    if (!user) {
+      res.status(400).json("No refresh token found in db or not matched!");
+    }
+    //  res.json(user);
+    const data = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    // console.log(data);
+    if (user?._id != data?.id) {
+      res.send("There is something wrong with refresh token!");
+    }
+    const accessToken = generateToken(user?._id);
+    res.json({ accessToken });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+//ROUTE 10: LOGOUT A USER
+const logout = async (req, res) => {
+  try {
+    const cookie = req.cookies;
+    // console.log(cookie);
+    if (!cookie?.refreshToken) {
+      res.status(400).json("No refresh token in cookies!");
+    }
+    const refreshToken = cookie?.refreshToken;
+    const user = await User.findOne({ refreshToken });
+    // console.log(user);
+    if (!user) {
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      });
+      return res.sendStatus(204); //Forbidden
+    }
+    // console.log(refreshToken);
+
+    await User.findOneAndUpdate(
+      { refreshToken },
+      {
+        refreshToken: "",
+      }
+    );
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+    });
+    return res.sendStatus(204); //Forbidden
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
 //ROUTE 6: UPDATE A USER
 const updateUser = async (req, res) => {
   try {
@@ -193,6 +262,46 @@ const unblockUser = async (req, res) => {
   }
 };
 
+//ROUTE 11: UPDATE PASSWORD
+const updatePassword = async (req, res) => {
+  try {
+    const { _id } = req?.user;
+    const { password } = req.body;
+    validateMongodbId(_id);
+
+    const user = await User.findById(_id);
+    if (password) {
+      user.password = password;
+      const updatedPassword = await user.save();
+      res.json(updatedPassword);
+    } else {
+      res.json(user);
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 12: FORGOT PASSWORD
+
+const forgotPasswordToken = async(req,res)=>{
+  try {
+    const {email} = req.body;
+    const user = await User.findOne({email});
+    if(!user){
+      res.json("User not found with this email!")
+    }
+
+    const token = await user.createPasswordResetToken(); //This will return the token(In user model)
+    await user.save();
+    
+  }catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+}
+
 module.exports = {
   createUser,
   loginUser,
@@ -202,4 +311,8 @@ module.exports = {
   updateUser,
   blockUser,
   unblockUser,
+  handleRefreshToken,
+  logout,
+  updatePassword,
+  forgotPasswordToken
 };
