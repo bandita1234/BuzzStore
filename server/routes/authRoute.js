@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createUser , loginUser, getAllUsers, getaUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken } = require("../controllers/userCtrl");
+const { createUser , loginUser, getAllUsers, getaUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword } = require("../controllers/userCtrl");
 const { body } = require("express-validator");
 const {fetchUser, isAdmin} =require("../middlewires/fetchUser");
 
@@ -35,6 +35,7 @@ router.post(
 
 router.put("/password",fetchUser,updatePassword)
 router.post("/forgot-password-token",forgotPasswordToken)
+router.put("/reset-password/:token",resetPassword)
 router.get("/getusers",getAllUsers);
 router.get("/refresh",handleRefreshToken);
 router.get("/logout",logout);

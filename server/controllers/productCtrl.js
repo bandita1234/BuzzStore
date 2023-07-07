@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Product = require("../models/Product");
+const User = require("../models/User")
 const slugify = require('slugify')
 
 //ROUTE 1: CREATE A PRODUCT
@@ -133,4 +134,40 @@ const deleteproduct = async(req,res)=>{
     }
 }
 
-module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct};
+//ROUTE 4: ADDING PRODUCTS TO WISHLIST
+const addToWishlist = async (req, res) => {
+  const { _id } = req.user;
+  const { prodId } = req.body;
+  try {
+    const user = await User.findById(_id);
+    const alreadyadded = user.wishlist.find((id) => id.toString() === prodId);
+    if (alreadyadded) {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $pull: { wishlist: prodId },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+    } else {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $push: { wishlist: prodId },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct,addToWishlist};

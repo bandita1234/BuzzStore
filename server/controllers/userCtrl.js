@@ -5,6 +5,8 @@ const { validationResult, cookie } = require("express-validator");
 const { validateMongodbId } = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshToken");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto')
+const sendEmail = require("./emailCtrl");
 
 //ROUTE 1: CREATE A USER (REGISTER)
 const createUser = async (req, res) => {
@@ -284,7 +286,6 @@ const updatePassword = async (req, res) => {
 };
 
 //ROUTE 12: FORGOT PASSWORD
-
 const forgotPasswordToken = async(req,res)=>{
   try {
     const {email} = req.body;
@@ -294,13 +295,52 @@ const forgotPasswordToken = async(req,res)=>{
     }
 
     const token = await user.createPasswordResetToken(); //This will return the token(In user model)
-    await user.save();
-    
+    await user.save(); //Used in route-13
+    const resetUrl = `Hi, Please follow this link to reset your password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here!</a>`
+    const data = {
+      to : email,
+      subject : "Forgot Password",
+      text : "Hey User",
+      htm : resetUrl
+    }
+    sendEmail(data);
+    res.json(token);
   }catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
   }
 }
+
+//ROUTE 13: RESET PASSWORD
+ const resetPassword = async(req,res)=>{
+  try {
+    const {password} = req.body;
+    const {token} = req.params;
+
+    //we need to hash the token
+    const hashedToken = crypto.createHash('sha256').update(token).digest("hex");
+
+    //Now,we will get out user from the token , as we have saved our user in route-12 
+    const user = await User.findOne({
+      PasswordResetToken : hashedToken,
+      PasswordResetExpires : {$gt : Date.now()}
+    })
+    // console.log(user);
+    if(!user){
+      res.json("Token expired! Please try again.")
+    }
+    user.password = password;
+    user.PasswordResetToken = undefined; // as our password have changed now
+    user.PasswordResetExpires = undefined;
+    await user.save();
+    res.json(user);
+  }catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+ }
+
+
 
 module.exports = {
   createUser,
@@ -314,5 +354,6 @@ module.exports = {
   handleRefreshToken,
   logout,
   updatePassword,
-  forgotPasswordToken
+  forgotPasswordToken,
+  resetPassword
 };

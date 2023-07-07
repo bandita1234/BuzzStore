@@ -40,7 +40,7 @@ const UserSchema = new Schema(
       default: [],
     },
     address: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     refreshToken : {
       type : String
     },
@@ -77,4 +77,4 @@ UserSchema.methods.createPasswordResetToken = async function () {
   return resetToken;
 };
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
