@@ -4,6 +4,7 @@ const Product = require("../models/Product");
 const User = require("../models/User")
 const slugify = require('slugify');
 const cloudinaryUploadImg = require("../utils/cloudinary");
+const fs = require('fs')
 
 //ROUTE 1: CREATE A PRODUCT
 const createProduct = async (req, res) => {
@@ -251,6 +252,7 @@ const uploadImages = async(req,res) =>{
       const newpath = await uploader(path);
       // console.log(newpath);
       urls.push(newpath);
+      fs.unlinkSync(path);
     }
 
     const findProduct = await Product.findByIdAndUpdate(id,{
