@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const { validateMongodbId } = require("../utils/validateMongodbId");
 const Product = require("../models/Product");
 const User = require("../models/User")
-const slugify = require('slugify')
+const slugify = require('slugify');
+const cloudinaryUploadImg = require("../utils/cloudinary");
 
 //ROUTE 1: CREATE A PRODUCT
 const createProduct = async (req, res) => {
@@ -19,6 +21,7 @@ const createProduct = async (req, res) => {
 //ROUTE 4: UPDATE PRODUCTS
 const updateproduct = async(req,res)=>{
     const {id} = req.params;
+    validateMongodbId(id);
     // console.log(id);
     try {
         if(req.body.title){
@@ -37,6 +40,7 @@ const updateproduct = async(req,res)=>{
 const getaproduct = async (req, res) => {
   try {
     const { id } = req.params;
+    validateMongodbId(id);
     const getproduct = await Product.findById(id);
     res.json(getproduct);
   } catch (error) {
@@ -120,9 +124,10 @@ const getallproducts = async (req, res) => {
   }
 };
 
-//ROUTE 4: UPDATE PRODUCTS
+//ROUTE 5: DELETE PRODUCTS
 const deleteproduct = async(req,res)=>{
   const {id} = req.params;
+  validateMongodbId(id);
   // console.log(id);
   try {
       const deletedProduct = await Product.findByIdAndDelete(id)
@@ -134,9 +139,9 @@ const deleteproduct = async(req,res)=>{
     }
 }
 
-//ROUTE 4: ADDING PRODUCTS TO WISHLIST
+//ROUTE 6: ADDING PRODUCTS TO WISHLIST
 const addToWishlist = async (req, res) => {
-  const { _id } = req.user;
+  const { _id } = req?.user;
   const { prodId } = req.body;
   try {
     const user = await User.findById(_id);
@@ -170,4 +175,97 @@ const addToWishlist = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct,addToWishlist};
+//ROUTE 7: PRODUCT RATINGS
+const rating = async (req, res) => {
+  const { _id } = req?.user;
+  const { star, prodId, comment } = req.body;
+  try {
+    const product = await Product.findById(prodId);
+    let alreadyRated = product.ratings.find(
+      (userId) => userId.postedby.toString() === _id.toString()
+    );
+    if (alreadyRated) {
+      const updateRating = await Product.updateOne(
+        {
+          ratings: { $elemMatch: alreadyRated }, //To get the already rated rating
+        },
+        {
+          $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+        },
+        {
+          new: true,
+        }
+      );
+      // res.json(updateRating)
+    } else {
+      const rateProduct = await Product.findByIdAndUpdate(
+        prodId,
+        {
+          $push: {
+            ratings: {
+              star: star,
+              comment: comment,
+              postedby: _id,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      // res.json(rateProduct)
+    }
+
+      const getallratings = await Product.findById(prodId);
+      let totalRating = getallratings.ratings.length;
+      let ratingsum = getallratings.ratings
+        .map((item) => item.star)
+        .reduce((prev, curr) => prev + curr, 0);
+      let actualRating = Math.round(ratingsum / totalRating);
+
+      let finalproduct = await Product.findByIdAndUpdate(
+        prodId,
+        {
+          totalrating: actualRating,
+        },
+        { new: true }
+      );
+      res.json(finalproduct);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+}
+
+const uploadImages = async(req,res) =>{
+  // console.log(req.files);
+  const {id} = req.params;
+  validateMongodbId(id);
+  try {
+    const uploader = (path)=> cloudinaryUploadImg(path, "images");
+    const urls = [];
+    const files = req.files;
+
+    for(const file of files){
+      const {path} = file;
+      const newpath = await uploader(path);
+      // console.log(newpath);
+      urls.push(newpath);
+    }
+
+    const findProduct = await Product.findByIdAndUpdate(id,{
+      images : urls.map((file)=>{
+        return file;
+      })
+    },{
+      new:true
+    })
+
+    res.json(findProduct);
+  }catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+}
+
+module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct,addToWishlist, rating, uploadImages};

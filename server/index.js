@@ -7,6 +7,7 @@ const productRouter = require('./routes/productRoute');
 const categoryRouter = require('./routes/prodCategoryRoute');
 const blogcategoryRouter = require('./routes/blogCategoryRoute');
 const brandRouter = require('./routes/brandRoute');
+const couponRouter = require('./routes/couponRoute')
 const morgan = require('morgan')
 connectToMongo();
 var cookieParser = require('cookie-parser')
@@ -25,6 +26,7 @@ app.use('/api/blog',blogRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
 app.use("/api/brand", brandRouter);
+app.use("/api/coupon", couponRouter);
 
 
 app.listen(PORT, () => {

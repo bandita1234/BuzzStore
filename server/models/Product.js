@@ -40,23 +40,24 @@ const ProductSchema = new Schema(
       default: 0,
       // select:false  //IF U WANT TO HIDE THIS THING FROM THE USER, ADD select:false
     },
-    images: {
-      type: Array,
-    },
+    images: [],
     color: {
       type: String,
     //   enum: ["Black", "Blue", "Red"],
     required: true,
     },
+    tags: String,
     ratings: [
       {
         star: Number,
-        postedby: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
+        comment: String,
+        postedby: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
     ],
+    totalrating: {
+      type: String,
+      default: 0,
+    },
   },
   {
     timestamps: true,
