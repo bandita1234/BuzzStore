@@ -178,7 +178,7 @@ const blogdislike = async (req, res) => {
 };
 
 const uploadImages = async(req,res) =>{
-  console.log(req.files);
+  // console.log(req.files);
   const {id} = req.params;
   validateMongodbId(id);
   try {

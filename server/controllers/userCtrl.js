@@ -90,6 +90,43 @@ const loginUser = async (req, res) => {
   });
 };
 
+//ROUTE 14: ADMIN LOGIN
+const loginAdmin = async (req, res) => {
+  try{
+  const { email, password } = req.body;
+  // check if user exists or not
+  const findAdmin = await User.findOne({ email });
+  if (findAdmin.role !== "admin") res.json("Not Authorised");
+  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+    const refreshToken = await generateRefreshToken(findAdmin?._id);
+    const updateuser = await User.findByIdAndUpdate(
+      findAdmin.id,
+      {
+        refreshToken: refreshToken,
+      },
+      { new: true }
+    );
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 72 * 60 * 60 * 1000,
+    });
+    res.json({
+      _id: findAdmin?._id,
+      firstname: findAdmin?.firstname,
+      lastname: findAdmin?.lastname,
+      email: findAdmin?.email,
+      mobile: findAdmin?.mobile,
+      token: generateToken(findAdmin?._id),
+    });
+  } else {
+    res.json("Invalid Credentials");
+  }
+} catch (error) {
+  console.error(error.message);
+  res.status(500).send("Internal server Error!");
+}
+};
+
 //ROUTE 9 : Handle refresh token
 const handleRefreshToken = async (req, res) => {
   try {
@@ -355,5 +392,6 @@ module.exports = {
   logout,
   updatePassword,
   forgotPasswordToken,
-  resetPassword
+  resetPassword,
+  loginAdmin
 };
