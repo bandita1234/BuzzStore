@@ -8,6 +8,8 @@ const categoryRouter = require('./routes/prodCategoryRoute');
 const blogcategoryRouter = require('./routes/blogCategoryRoute');
 const brandRouter = require('./routes/brandRoute');
 const couponRouter = require('./routes/couponRoute')
+const colorRouter = require('./routes/colorRoute')
+const enquiryRouter = require('./routes/enquiryRoute')
 const morgan = require('morgan')
 connectToMongo();
 var cookieParser = require('cookie-parser')
@@ -27,7 +29,8 @@ app.use("/api/category", categoryRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
 app.use("/api/brand", brandRouter);
 app.use("/api/coupon", couponRouter);
-
+app.use("/api/color", colorRouter);
+app.use("/api/enquiry", enquiryRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

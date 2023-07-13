@@ -3,7 +3,7 @@ const { validateMongodbId } = require("../utils/validateMongodbId");
 const Product = require("../models/Product");
 const User = require("../models/User")
 const slugify = require('slugify');
-const cloudinaryUploadImg = require("../utils/cloudinary");
+const {cloudinaryUploadImg, cloudinaryDeleteImg} = require("../utils/cloudinary");
 const fs = require('fs')
 
 //ROUTE 1: CREATE A PRODUCT
@@ -240,8 +240,6 @@ const rating = async (req, res) => {
 
 const uploadImages = async(req,res) =>{
   // console.log(req.files);
-  const {id} = req.params;
-  validateMongodbId(id);
   try {
     const uploader = (path)=> cloudinaryUploadImg(path, "images");
     const urls = [];
@@ -254,20 +252,25 @@ const uploadImages = async(req,res) =>{
       urls.push(newpath);
       fs.unlinkSync(path);
     }
-
-    const findProduct = await Product.findByIdAndUpdate(id,{
-      images : urls.map((file)=>{
-        return file;
-      })
-    },{
-      new:true
-    })
-
-    res.json(findProduct);
+    const images = urls.map((file) => {
+      return file;
+    });
+    res.json(images);
   }catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
   }
 }
 
-module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct,addToWishlist, rating, uploadImages};
+const deleteImages = async(req,res) =>{
+  // console.log(req.files);
+  const {id} = req.params;
+  try {
+    const deleted = cloudinaryDeleteImg(id, "images");
+    res.json({message : "Deleted"});
+  }catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+}
+module.exports = { createProduct, getaproduct,getallproducts,updateproduct,deleteproduct,addToWishlist, rating, uploadImages,deleteImages};

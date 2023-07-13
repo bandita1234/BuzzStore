@@ -1,12 +1,17 @@
 const { generateToken } = require("../config/jwtToken");
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const Product = require("../models/Product");
+const Cart = require("../models/Cart");
+const Coupon = require("../models/Coupon");
+const Order = require("../models/Order");
 const { validationResult, cookie } = require("express-validator");
 const { validateMongodbId } = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshToken");
 const jwt = require("jsonwebtoken");
-const crypto = require('crypto')
+const crypto = require("crypto");
 const sendEmail = require("./emailCtrl");
+const uniqid = require("uniqid");
 
 //ROUTE 1: CREATE A USER (REGISTER)
 const createUser = async (req, res) => {
@@ -92,39 +97,39 @@ const loginUser = async (req, res) => {
 
 //ROUTE 14: ADMIN LOGIN
 const loginAdmin = async (req, res) => {
-  try{
-  const { email, password } = req.body;
-  // check if user exists or not
-  const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") res.json("Not Authorised");
-  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findAdmin?._id);
-    const updateuser = await User.findByIdAndUpdate(
-      findAdmin.id,
-      {
-        refreshToken: refreshToken,
-      },
-      { new: true }
-    );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
-    });
-    res.json({
-      _id: findAdmin?._id,
-      firstname: findAdmin?.firstname,
-      lastname: findAdmin?.lastname,
-      email: findAdmin?.email,
-      mobile: findAdmin?.mobile,
-      token: generateToken(findAdmin?._id),
-    });
-  } else {
-    res.json("Invalid Credentials");
+  try {
+    const { email, password } = req.body;
+    // check if user exists or not
+    const findAdmin = await User.findOne({ email });
+    if (findAdmin.role !== "admin") res.json("Not Authorised");
+    if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+      const refreshToken = await generateRefreshToken(findAdmin?._id);
+      const updateuser = await User.findByIdAndUpdate(
+        findAdmin.id,
+        {
+          refreshToken: refreshToken,
+        },
+        { new: true }
+      );
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 72 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: findAdmin?._id,
+        firstname: findAdmin?.firstname,
+        lastname: findAdmin?.lastname,
+        email: findAdmin?.email,
+        mobile: findAdmin?.mobile,
+        token: generateToken(findAdmin?._id),
+      });
+    } else {
+      res.json("Invalid Credentials");
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
   }
-} catch (error) {
-  console.error(error.message);
-  res.status(500).send("Internal server Error!");
-}
 };
 
 //ROUTE 9 : Handle refresh token
@@ -233,7 +238,7 @@ const getAllUsers = async (req, res) => {
 // ROUTE 4: GET A SINGLE USER DETAILS
 const getaUser = async (req, res) => {
   try {
-    const { id } = req?.user;
+    const { id } = req.params;
     validateMongodbId(id);
     // console.log(id);
     const getUser = await User.findById(id).select("-password");
@@ -323,61 +328,283 @@ const updatePassword = async (req, res) => {
 };
 
 //ROUTE 12: FORGOT PASSWORD
-const forgotPasswordToken = async(req,res)=>{
+const forgotPasswordToken = async (req, res) => {
   try {
-    const {email} = req.body;
-    const user = await User.findOne({email});
-    if(!user){
-      res.json("User not found with this email!")
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.json("User not found with this email!");
     }
 
     const token = await user.createPasswordResetToken(); //This will return the token(In user model)
     await user.save(); //Used in route-13
-    const resetUrl = `Hi, Please follow this link to reset your password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here!</a>`
+    const resetUrl = `Hi, Please follow this link to reset your password. This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password/${token}'>Click here!</a>`;
     const data = {
-      to : email,
-      subject : "Forgot Password",
-      text : "Hey User",
-      htm : resetUrl
-    }
+      to: email,
+      subject: "Forgot Password",
+      text: "Hey User",
+      htm: resetUrl,
+    };
     sendEmail(data);
     res.json(token);
-  }catch (error) {
+  } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
   }
-}
+};
 
 //ROUTE 13: RESET PASSWORD
- const resetPassword = async(req,res)=>{
+const resetPassword = async (req, res) => {
   try {
-    const {password} = req.body;
-    const {token} = req.params;
+    const { password } = req.body;
+    const { token } = req.params;
 
     //we need to hash the token
-    const hashedToken = crypto.createHash('sha256').update(token).digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    //Now,we will get out user from the token , as we have saved our user in route-12 
+    //Now,we will get out user from the token , as we have saved our user in route-12
     const user = await User.findOne({
-      PasswordResetToken : hashedToken,
-      PasswordResetExpires : {$gt : Date.now()}
-    })
+      PasswordResetToken: hashedToken,
+      PasswordResetExpires: { $gt: Date.now() },
+    });
     // console.log(user);
-    if(!user){
-      res.json("Token expired! Please try again.")
+    if (!user) {
+      res.json("Token expired! Please try again.");
     }
     user.password = password;
     user.PasswordResetToken = undefined; // as our password have changed now
     user.PasswordResetExpires = undefined;
     await user.save();
     res.json(user);
-  }catch (error) {
+  } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
   }
- }
+};
 
+//ROUTE 15: GET WISHLIST OF USER
+const getWishlist = async (req, res) => {
+  const { _id } = req.user;
+  validateMongodbId(_id);
+  try {
+    const findUser = await User.findById(_id).populate("wishlist");
+    res.json(findUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
 
+//ROUTE 16: SAVE ADDRESS OF USER
+const saveAddress = async (req, res, next) => {
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        address: req?.body?.address,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 17: ADD TO CART FUNCTINALITY
+const userCart = async (req, res) => {
+  const { cart } = req.body;
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+  try {
+    let products = [];
+    const user = await User.findById(_id);
+    // check if user already have product in cart
+    const alreadyExistCart = await Cart.findOne({ orderby: user._id });
+    if (alreadyExistCart) {
+      alreadyExistCart.remove();
+    }
+    for (let i = 0; i < cart.length; i++) {
+      let object = {};
+      object.product = cart[i]._id;
+      object.count = cart[i].count;
+      object.color = cart[i].color;
+      let getPrice = await Product.findById(cart[i]._id).select("price").exec();
+      object.price = getPrice.price;
+      products.push(object);
+    }
+    // console.log(products);
+
+    let cartTotal = 0;
+    for (let i = 0; i < products.length; i++) {
+      cartTotal = cartTotal + products[i].price * products[i].count;
+    }
+    // console.log(products,cartTotal);
+
+    let newCart = await new Cart({
+      products,
+      cartTotal,
+      orderby: user?._id,
+    }).save();
+    res.json(newCart);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 18: GET USER'S CART
+const getUserCart = async (req, res) => {
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+  try {
+    const cart = await Cart.findOne({ orderby: _id }).populate(
+      "products.product"
+    );
+    res.json(cart);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 19: EMPTY CART
+const emptyCart = async (req, res) => {
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+  try {
+    // const user = await User.findOne({ _id });
+    const cart = await Cart.findOneAndRemove({ orderby: _id });
+    res.json(cart);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 20: APPLY COUPON
+const applyCoupon = async (req, res) => {
+  const { coupon } = req.body;
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+  try {
+    const validCoupon = await Coupon.findOne({ name: coupon });
+    // console.log(validCoupon);
+
+    if (validCoupon == null) {
+      res.json("Invalid Coupon!");
+    }
+
+    const user = await User.findOne({ _id });
+    let { cartTotal } = await Cart.findOne({
+      orderby: user._id,
+    }).populate("products.product");
+    let totalAfterDiscount = (
+      cartTotal -
+      (cartTotal * validCoupon.discount) / 100
+    ).toFixed(2);
+    await Cart.findOneAndUpdate(
+      { orderby: user._id },
+      { totalAfterDiscount },
+      { new: true }
+    );
+    res.json(totalAfterDiscount);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 21: CREATE ORDER
+const createOrder = async (req, res) => {
+  const { COD, couponApplied } = req.body;
+  const { _id } = req?.user;
+  validateMongodbId(_id);
+  try {
+    if (!COD) res.send("Create cash order failed");
+    const user = await User.findOne({ _id });
+    let userCart = await Cart.findOne({ orderby: user._id });
+
+    let finalAmout = 0;
+    if (couponApplied && userCart.totalAfterDiscount) {
+      finalAmout = userCart.totalAfterDiscount;
+    } else {
+      finalAmout = userCart.cartTotal;
+    }
+    let newOrder = await new Order({
+      products: userCart.products,
+      paymentIntent: {
+        id: uniqid(),
+        method: "COD",
+        amount: finalAmout,
+        status: "Cash on Delivery",
+        created: Date.now(),
+        currency: "usd",
+      },
+      orderby: user._id,
+      orderStatus: "Cash on Delivery",
+    }).save();
+    let update = userCart.products.map((item) => {
+      return {
+        updateOne: {
+          filter: { _id: item.product._id },
+          update: { $inc: { quantity: -item.count, sold: +item.count } },
+        },
+      };
+    });
+    const updated = await Product.bulkWrite(update, {});
+    // res.json(updated)
+    res.json({ message: "success" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 22: GET ORDERS
+const getOrders = async (req, res) => {
+  const { _id } = req.user;
+  validateMongodbId(_id);
+  try {
+    const userorders = await Order.findOne({ orderby: _id })
+      .populate("products.product")
+      .populate("orderby")
+      .exec();
+    res.json(userorders);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 23: UPDATE ORDER STATUS
+const updateOrderStatus = async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+  validateMongodbId(id);
+  try {
+    const updateOrderStatus = await Order.findByIdAndUpdate(
+      id,
+      {
+        orderStatus: status,
+        paymentIntent: {
+          status: status,
+        },
+      },
+      { new: true }
+    );
+    res.json(updateOrderStatus);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
 
 module.exports = {
   createUser,
@@ -393,5 +620,14 @@ module.exports = {
   updatePassword,
   forgotPasswordToken,
   resetPassword,
-  loginAdmin
+  loginAdmin,
+  getWishlist,
+  saveAddress,
+  userCart,
+  getUserCart,
+  emptyCart,
+  applyCoupon,
+  createOrder,
+  getOrders,
+  updateOrderStatus
 };

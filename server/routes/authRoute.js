@@ -1,8 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const { createUser , loginUser, getAllUsers, getaUser, deleteUser, updateUser, blockUser, unblockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdmin } = require("../controllers/userCtrl");
+const {
+  createUser,
+  loginUser,
+  getAllUsers,
+  getaUser,
+  deleteUser,
+  updateUser,
+  blockUser,
+  unblockUser,
+  handleRefreshToken,
+  logout,
+  updatePassword,
+  forgotPasswordToken,
+  resetPassword,
+  loginAdmin,
+  getWishlist,
+  saveAddress,
+  userCart,
+  getUserCart,
+  emptyCart,
+  applyCoupon,
+  createOrder,
+  getOrders,
+  updateOrderStatus,
+} = require("../controllers/userCtrl");
 const { body } = require("express-validator");
-const {fetchUser, isAdmin} =require("../middlewires/fetchUser");
+const { fetchUser, isAdmin } = require("../middlewires/fetchUser");
 
 router.post(
   "/register",
@@ -12,8 +36,11 @@ router.post(
     // email must be an valid email
     body("email", "Enter a valid email").isEmail(),
 
-     //mobile number must be 10 chars long
-     body("mobile", "Enter a valid mobile number").isLength({ min: 10, max: 10 }),
+    //mobile number must be 10 chars long
+    body("mobile", "Enter a valid mobile number").isLength({
+      min: 10,
+      max: 10,
+    }),
     // password must be at least 5 chars long
     body("password", "password must be at least 5 character long").isLength({
       min: 5,
@@ -33,17 +60,26 @@ router.post(
   loginUser
 );
 
-router.post("/admin-login",loginAdmin)
-router.put("/password",fetchUser,updatePassword)
-router.post("/forgot-password-token",forgotPasswordToken)
-router.put("/reset-password/:token",resetPassword)
-router.get("/getusers",getAllUsers);
-router.get("/refresh",handleRefreshToken);
-router.get("/logout",logout);
-router.get("/",fetchUser,isAdmin,getaUser);
-router.delete("/:id",deleteUser);
-router.put("/update-user",fetchUser,updateUser);
-router.put("/block-user/:id",fetchUser,isAdmin,blockUser);
-router.put("/unblock-user/:id",fetchUser,isAdmin,unblockUser);
+router.post("/admin-login", loginAdmin);
+router.post("/cart", fetchUser, userCart);
+router.post("/cart/applycoupon", fetchUser, applyCoupon);
+router.post("/cart/createorder", fetchUser, createOrder);
+router.get("/getcart", fetchUser, getUserCart);
+router.put("/password", fetchUser, updatePassword);
+router.post("/forgot-password-token", forgotPasswordToken);
+router.put("/reset-password/:token", resetPassword);
+router.put("/update-order/:id",fetchUser, isAdmin, updateOrderStatus);
+router.get("/getusers", getAllUsers);
+router.get("/refresh", handleRefreshToken);
+router.get("/logout", logout);
+router.get("/wishlist", fetchUser, getWishlist);
+router.get("/cart/getorders",fetchUser,getOrders)
+router.put("/save-address", fetchUser, saveAddress);
+router.get("/:id", fetchUser, isAdmin, getaUser);
+router.delete("/emptycart", fetchUser, emptyCart);
+router.delete("/:id", deleteUser);
+router.put("/update-user", fetchUser, updateUser);
+router.put("/block-user/:id", fetchUser, isAdmin, blockUser);
+router.put("/unblock-user/:id", fetchUser, isAdmin, unblockUser);
 
 module.exports = router;

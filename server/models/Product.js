@@ -41,11 +41,7 @@ const ProductSchema = new Schema(
       // select:false  //IF U WANT TO HIDE THIS THING FROM THE USER, ADD select:false
     },
     images: [],
-    color: {
-      type: String,
-    //   enum: ["Black", "Blue", "Red"],
-    required: true,
-    },
+    color: [],
     tags: String,
     ratings: [
       {
