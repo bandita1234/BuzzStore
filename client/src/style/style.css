@@ -1,0 +1,262 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  /* padding: 0; */
+  /* margin: 0; */
+  /* font-family: "Poppins", sans-serif; */
+}
+
+footer {
+  color: #fff;
+  /* background: linear-gradient(to right, rgba(13,13,29) 0%, rgb(15, 79, 106) 100%); */
+  /* background: linear-gradient(0deg, #131313, #a222cc); */
+  background-color: rgba(129, 124, 124, 0.266);
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: 80px;
+  border-top-left-radius: 70px;
+  font-size: 1rem;
+}
+
+.social-links {
+  text-align: center;
+  margin-left: 1%;
+}
+
+.m {
+  display: none;
+}
+
+.footer-header1 {
+  text-align: center;
+}
+
+.main {
+  margin: 50px;
+  padding-top: 20px;
+  display: grid;
+  gap: 50px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.footer-header1 img{
+  width: 70px;
+}
+
+@media (max-width: 960px) {
+  footer {
+    width: 100%;
+    top: 120px;
+  }
+
+  .main {
+    margin: 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .logo {
+    grid-column: 1/3;
+  }
+
+  .office {
+    grid-column: 3/5;
+  }
+  .link {
+    grid-column: 1/3;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    gap: 0px;
+  }
+  .newsletter {
+    display: none;
+  }
+
+  .m {
+    display: block;
+  }
+
+  .r {
+    display: none;
+  }
+
+  .icons {
+    display: flex;
+  }
+  .lhr {
+    width: 45%;
+    margin-left: 0;
+  }
+  .row1 {
+    grid-column: 1/4;
+  }
+  .social-links {
+    margin-top: 3%;
+    text-align: left;
+  }
+  .footer-header {
+    text-align: left;
+  }
+}
+
+.manik {
+  width: 120px;
+}
+
+.row1 {
+  margin-top: 50px;
+  text-align: left;
+}
+.footer-header {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #F2AA4CFF;
+}
+
+.office-des {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.office a {
+  text-decoration: none;
+  color: #98a8f8;
+}
+.office a:hover {
+  color: #fff;
+}
+.num {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.link-des {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.link-des a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.link-des a:hover {
+  color: #fff;
+  transition: linear 0.3s;
+}
+
+.btn-know {
+  text-decoration: none;
+  background-color: #fff;
+  padding: 10px;
+  position: relative;
+  top: 30px;
+  background-color: transparent;
+  border: 1px solid #98a8f8;
+  color: #98a8f8;
+  text-transform: uppercase;
+  border-radius: 10px;
+}
+
+.btn-know:hover {
+  color: white;
+  background-color: #98a8f8;
+  transition: linear 0.3s;
+}
+.subcribe {
+  display: flex;
+}
+input[type="mail"] {
+  border: none;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #fff;
+  background-color: transparent;
+  font-size: 0.8rem;
+}
+.sub-icon {
+  margin: 7px;
+  margin-right: 15px;
+  margin-left: 0;
+  font-size: 1.5rem;
+}
+.ri-arrow-right-line {
+  margin-left: 0;
+}
+
+.icons a {
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid #fff;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 50%;
+  align-items: center;
+  font-size: 1.1rem;
+  margin: 2%;
+}
+
+.social-icon {
+  position: relative;
+  top: 2px;
+}
+
+.newsletter-des {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.copyright {
+  text-align: center;
+}
+
+hr {
+  width: 90%;
+  margin: 2px auto;
+  opacity: 40%;
+  border: 0.01px solid white;
+}
+
+.copyright p {
+  padding: 20px;
+}
+
+.social-links a {
+  display: inline-block;
+  height: 9px;
+  width: 9px;
+  padding: 3%;
+  margin: 0 10px 10px 0;
+  text-align: center;
+  font-size: 37px;
+  line-height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-table;
+  background: rgba(65, 65, 66, 0.4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.join_club{
+  height: 40px;
+  background-color: #F2AA4CFF;
+  cursor: pointer;  
+
+}
+.join_club::after{
+  content: "Join";
+  position: relative;
+  left: 14px;
+}
+.join_club input{
+  height: 100%;
+  width: 80%;
+  padding: 0 4px;
+}
