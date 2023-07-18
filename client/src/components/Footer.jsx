@@ -8,8 +8,8 @@ const Footer = () => {
   return (
     <>
       <div className=" px-4 bg-[#13073570]">
-        <div className="flex items-center gap-10 mb-3">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center mb-3 gap-2 md:flex-row md:gap-10">
+          <div className="flex items-center gap-2 ">
             <HiOutlineRocketLaunch size={"40px"} />
             <p className="text-2xl font-mono text-main-color">
               Sign Up For news letter!
@@ -21,8 +21,8 @@ const Footer = () => {
           </div>
         </div>
         <hr />
-        <div className="flex justify-between mb-3 py-3">
-          <div className="space-y-6">
+        <div className="flex flex-col justify-center items-center md:flex-row md:justify-between mb-3 py-3 text-center ">
+          <div className="space-y-6 mb-3">
             <h4 className="text-xl font-bold text-main-color">Contact Us</h4>
             <div className="mb-3">
               <h5 className="text-xl">Buzz Store</h5>
@@ -32,7 +32,8 @@ const Footer = () => {
             <p>Ph - +8114852522</p>
             <p>Email - barsasmile23@gmail.com</p>
           </div>
-          <div className="space-y-4">
+         
+          <div className="space-y-4 mb-3">
             <h4 className="text-xl font-bold text-main-color">Information</h4>
             <p>Privacy Policy</p>
             <p>Refund Policy</p>
@@ -40,7 +41,7 @@ const Footer = () => {
             <p>Terms Of Service</p>
             <p>Blogs</p>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-3">
             <h4 className="text-xl font-bold text-main-color">Account</h4>
             <p>Search</p>
             <p>About Us</p>
@@ -48,7 +49,7 @@ const Footer = () => {
             <p>Contact</p>
             <p>Size Chart</p>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 mb-3">
             <h4 className="text-xl font-bold text-main-color">Quick Links</h4>
             <Link>Accesories</Link>
             <Link>Laptops</Link>
@@ -56,7 +57,7 @@ const Footer = () => {
             <Link>Smart Watches</Link>
             <Link>Tablets</Link>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-3">
             <h4 className="text-xl font-bold text-main-color">Our App</h4>
             <p>
               Download the App and get extra 15% Discount on your first order!

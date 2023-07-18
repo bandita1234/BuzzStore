@@ -9,7 +9,8 @@ export default {
     colors: {
       "main-color": "var(--main-color)",
       "text-color": "var(--text-color)",
-      "background-color": "var(--background-color)"
+      "background-color": "var(--background-color)",
+      "red" : "var(--red)"
     },
   },
   plugins: [],
