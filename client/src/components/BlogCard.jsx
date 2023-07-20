@@ -3,8 +3,8 @@ import blog_img from "../assets/blog_img.avif";
 
 const BlogCard = () => {
   return (
-    <div>
-      <div className="max-w-sm rounded overflow-hidden bg-[#142537] shadow-[-6px_-6px_6px_1px_#1d2c3b,_6px_6px_6px_1px_#1d2c3b]">
+    <div className="lg:w-1/4 md:w-1/3 sm:w-1/2 w-full px-2">
+      <div className="max-w-xs mx-auto rounded overflow-hidden bg-[#12263c] border-border-color shadow-[-6px_-6px_6px_1px_#1d2c3b,_6px_6px_6px_1px_#1d2c3b]">
         <img
           className="w-full"
           src={blog_img}

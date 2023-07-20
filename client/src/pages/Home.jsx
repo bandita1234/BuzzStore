@@ -13,7 +13,10 @@ import "swiper/css/pagination";
 
 import Marquee from "react-fast-marquee";
 
+// import ProductCard from "../components/ProductCard"
+import ProductCard from "../components/ProductCard";
 import BlogCard from "../components/BlogCard";
+import SpecialProducts from "../components/SpecialProducts";
 
 // Icons
 import { FaShippingFast, FaAmazonPay } from "react-icons/fa";
@@ -342,6 +345,39 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Product Section */}
+      <div>
+        <h2>Our Featured Collections</h2>
+        <div className="flex flex-wrap justify-center">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+        </div>
+      </div>
+
+      {/* Special Products */}
+      <div>
+        <h2>Our Special Products</h2>
+        <div className="flex flex-wrap">
+          <SpecialProducts />
+          <SpecialProducts />
+          <SpecialProducts />
+          <SpecialProducts />
+        </div>
+      </div>
+
+      {/* Popular Product */}
+      <div>
+        <h2>Our Popular Products</h2>
+        <div className="flex flex-wrap justify-center">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+        </div>
+      </div>
+
       {/* Marquee-wrapper for brands */}
       <div className="bg-[#b6b2b2]">
         <Marquee className="">
@@ -374,8 +410,8 @@ const Home = () => {
 
       {/* Blog Section */}
       <div>
-      <h2>Our Latest Blogs</h2>
-        <div className="flex mt-3 gap-3">
+        <h2>Our Latest Blogs</h2>
+        <div className="flex flex-wrap justify-evenly mt-3 px-3">
           <BlogCard />
           <BlogCard />
           <BlogCard />

@@ -7,5 +7,7 @@
     /* --text-color : #9D9D9D */
     --text-color : #d1d5db;
     --background-color: #0A1929;
-    --red : #FE0000
+    --red : #FE0000;
+    --border-color : #1d2c3b;
+    --box-background:#12263c;
 }

@@ -82,7 +82,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-2 lg:gap-6">
           <Link to="/">Home</Link>
-          <Link>Our Store</Link>
+          <Link to="/store">Our Store</Link>
           <Link>Blogs</Link>
           <Link to="/contact">Contact</Link>
         </div>
