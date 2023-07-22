@@ -253,7 +253,7 @@ const OurStore = () => {
                   />
                 </div>
                 <div className="w-2/3">
-                  <h3 className="text-xs sm:text-sm font-bold text-[#c5d3e2] mb-1 line-clamp-2">
+                  <h3 className="text-xs sm:text-sm font-bold text-product-descripion mb-1 line-clamp-2">
                     Roadster Men Blue Analogue Watch MFB-PN-WTH-9710G (Onesize)
                     by Myntra
                   </h3>
@@ -284,7 +284,7 @@ const OurStore = () => {
                   />
                 </div>
                 <div className="w-2/3">
-                  <h3 className="text-xs sm:text-sm font-bold text-[#c5d3e2] mb-1 line-clamp-2">
+                  <h3 className="text-xs sm:text-sm font-bold text-product-descripion mb-1 line-clamp-2">
                     Roadster Men Blue Analogue Watch MFB-PN-WTH-9710G (Onesize)
                     by Myntra
                   </h3>

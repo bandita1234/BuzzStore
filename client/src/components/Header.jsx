@@ -39,7 +39,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-6">
           <div>
-            <Link className="flex items-center gap-1">
+            <Link to="/compare-products" className="flex items-center gap-1">
               <IoMdGitCompare size={"25px"} />
               <p className="hidden md:inline-block">
                 Compare <br /> Products
@@ -47,7 +47,7 @@ const Header = () => {
             </Link>
           </div>
           <div>
-            <Link className="flex items-center gap-1">
+            <Link to="/wishlist" className="flex items-center gap-1">
               <IoMdHeartEmpty size={"30px"} />
               <p className="hidden md:inline-block">
                 Favourite <br /> Wishlist
@@ -55,13 +55,13 @@ const Header = () => {
             </Link>
           </div>
           <div>
-            <Link className="flex items-center gap-1">
+            <Link to="/login" className="flex items-center gap-1">
               <FaRegUser size={"25px"} />
               <p className="hidden md:inline-block">Login</p>
             </Link>
           </div>
           <div>
-            <Link className="flex items-center gap-1">
+            <Link to="/cart" className="flex items-center gap-1">
               <AiOutlineShoppingCart size={"30px"} />
               <p className="hidden md:inline-block">Cart(2)</p>
             </Link>

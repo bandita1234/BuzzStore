@@ -68,7 +68,7 @@ const ProductCard = () => {
           <p className="text-sm sm:text-lg font-semibold text-main-color">
             Roadster
           </p>
-          <h3 className="text-xs sm:text-base text-[#c5d3e2] mb-1">
+          <h3 className="text-xs sm:text-base text-product-descripion mb-1">
             Roadster Men Blue Analogue Watch MFB-PN-WTH-9710G (Onesize) by
             Myntra
           </h3>

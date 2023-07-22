@@ -14,6 +14,7 @@ export default {
       "red" : "var(--red)",
       "border-color" : "var(--border-color)",
       "box-background" : "var(--box-background)",
+      "product-descripion" : "var(--product-descripion)",
     },
   },
   plugins: [],

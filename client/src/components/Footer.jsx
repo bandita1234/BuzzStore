@@ -7,7 +7,7 @@ import {BsInstagram,BsWhatsapp,BsGithub,BsLinkedin} from "react-icons/bs";
 const Footer = () => {
   return (
     <>
-      <div className="md:mt-10 p-4 bg-[#13073570] border border-border-color rounded-xl">
+      <div className="md:mt-10 mt-6 p-4 bg-[#13073570] border border-border-color rounded-xl">
         <div className="flex flex-col items-center mb-3 gap-2 md:flex-row md:gap-10">
           <div className="flex items-center gap-2 ">
             <HiOutlineRocketLaunch size={"40px"} />
