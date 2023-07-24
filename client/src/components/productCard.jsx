@@ -72,7 +72,7 @@ const ProductCard = () => {
             Roadster Men Blue Analogue Watch MFB-PN-WTH-9710G (Onesize) by
             Myntra
           </h3>
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <ReactStars
               count={5}
               size={24}
