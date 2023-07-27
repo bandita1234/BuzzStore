@@ -5,6 +5,7 @@ import Meta from "../components/Meta";
 
 import watch_img from "../assets/watch_img.avif";
 import ProductCard from "../components/ProductCard"
+import {getAllProducts} from '../features/product/ProductSlice'
 
 //icons
 import { RxDragHandleVertical } from "react-icons/rx";
@@ -12,8 +13,15 @@ import { LiaGripLinesVerticalSolid } from "react-icons/lia";
 import { HiMiniBars3 } from "react-icons/hi2";
 import { FiBarChart2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const OurStore = () => {
+
+  const productState = useSelector((state)=>state.product.product)
+  // console.log(productState);
+  const dispatch = useDispatch();
+
   const [colArr, setcolArr] = useState([
     "#FF6633",
     "#FFB399",
@@ -66,6 +74,14 @@ const OurStore = () => {
     "#99E6E6",
     "#6666FF",
   ]);
+
+  const getproducts = ()=>{
+    dispatch(getAllProducts());
+  }
+
+  useEffect(()=>{
+    getproducts();
+  },[])
   return (
     <div className="">
       <Meta title="Our Store" />
@@ -102,7 +118,7 @@ const OurStore = () => {
                     className="w-4 h-4 accent-main-color text-main-color border-gray-300 rounded focus:ring-main-color focus:ring-2"
                   />
                   <label
-                    for="default-checkbox"
+                    htmlFor="default-checkbox"
                     className="ml-2 text-md font-medium"
                   >
                     In Stock(20)
@@ -116,7 +132,7 @@ const OurStore = () => {
                     className="w-4 h-4 accent-main-color text-main-color border-gray-300 rounded focus:ring-main-color focus:ring-2"
                   />
                   <label
-                    for="checked-checkbox"
+                    htmlFor="checked-checkbox"
                     className="ml-2 text-md font-medium"
                   >
                     Out Of Stock(2)
@@ -137,7 +153,7 @@ const OurStore = () => {
                     placeholder=" "
                   />
                   <label
-                    for="floating_outlined"
+                    htmlFor="floating_outlined"
                     className="absolute text-sm duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-main-color peer-focus:bg-background-color peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                   >
                     From
@@ -151,7 +167,7 @@ const OurStore = () => {
                     placeholder=" "
                   />
                   <label
-                    for="floating_outlined"
+                    htmlFor="floating_outlined"
                     className="absolute text-sm duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-main-color peer-focus:bg-background-color peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                   >
                     To
@@ -186,7 +202,7 @@ const OurStore = () => {
                     className="w-4 h-4 text-main-color accent-main-color focus:ring-main-color ring-offset-main-color focus:ring-2 focus:bg-main-color border-main-color"
                   />
                   <label
-                    for="default-radio-1"
+                    htmlFor="default-radio-1"
                     className="ml-2 text-md font-medium"
                   >
                     Default radio
@@ -202,7 +218,7 @@ const OurStore = () => {
                     className="w-4 h-4 text-main-color accent-main-color focus:ring-main-color ring-offset-main-color focus:ring-2 focus:bg-main-color border-main-color"
                   />
                   <label
-                    for="default-radio-2"
+                    htmlFor="default-radio-2"
                     className="ml-2 text-md font-medium"
                   >
                     Checked state
@@ -341,7 +357,7 @@ const OurStore = () => {
 
           {/* Products */}
           <div className="flex flex-wrap">
-            <ProductCard/>
+            <ProductCard data={productState}/>
             <ProductCard/>
             <ProductCard/>
             <ProductCard/>

@@ -9,7 +9,9 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { BiShuffle, BiShoppingBag } from "react-icons/bi";
 import { AiOutlineEye } from "react-icons/ai";
 
-const ProductCard = () => {
+const ProductCard = (props) => {
+  const {data} = props;
+  // console.log(data);
   const [showFirstImage, setShowFirstImage] = useState(true);
   const handleMouseEnter = () => {
     setShowFirstImage(false);
@@ -20,7 +22,7 @@ const ProductCard = () => {
   };
   return (
     <div className="px-1 py-2 sm:p-4 lg:w-1/4 w-1/2">
-      {/* <Link href={`/product/${product.slug}`}> */}
+      <Link to="/product/:id">
       <div className="w-full max-w-xs mx-auto rounded-lg shadow-lg border-2 border-border-color bg-box-background cursor-pointer min-h-[400px]">
         <div
           className="relative text-center overflow-hidden w-full border-b-4 border-border-color group"
@@ -87,7 +89,7 @@ const ProductCard = () => {
           </h2>
         </div>
       </div>
-      {/* </Link> */}
+      </Link>
     </div>
   );
 };

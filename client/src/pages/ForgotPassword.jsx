@@ -21,7 +21,7 @@ const ForgotPassword = () => {
               Forgot Password? Don't worry, We'll send you an email to reset
               your password !
             </p>
-            <div class="relative mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 id="floating_outlined2"
@@ -29,8 +29,8 @@ const ForgotPassword = () => {
                 placeholder=" "
               />
               <label
-                for="floating_outlined2"
-                class="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                htmlFor="floating_outlined2"
+                className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Email
               </label>

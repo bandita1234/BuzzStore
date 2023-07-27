@@ -30,7 +30,7 @@ const Contact = () => {
         <div className="flex items-center justify-center gap-3 lg:gap-20 bg-box-background mt-3 rounded-3xl">
           <div className="w-1/2">
             <h2>Contact Us</h2>
-            <div class="relative mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 id="floating_outlined1"
@@ -39,14 +39,14 @@ const Contact = () => {
                 placeholder=" "
               />
               <label
-                for="floating_outlined1"
-                class="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                htmlFor="floating_outlined1"
+                className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Name
               </label>
             </div>
 
-            <div class="relative mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 id="floating_outlined2"
@@ -54,14 +54,14 @@ const Contact = () => {
                 placeholder=" "
               />
               <label
-                for="floating_outlined2"
-                class="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                htmlFor="floating_outlined2"
+                className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Email
               </label>
             </div>
 
-            <div class="relative mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 id="floating_outlined3"
@@ -70,14 +70,14 @@ const Contact = () => {
                 placeholder=" "
               />
               <label
-                for="floating_outlined3"
-                class="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                htmlFor="floating_outlined3"
+                className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Phone
               </label>
             </div>
 
-            <div class="relative mb-3">
+            <div className="relative mb-3">
               <input
                 type="text"
                 id="floating_outlined4"
@@ -86,8 +86,8 @@ const Contact = () => {
                 placeholder=" "
               />
               <label
-                for="floating_outlined4"
-                class="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                htmlFor="floating_outlined4"
+                className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
               >
                 Comment
               </label>
