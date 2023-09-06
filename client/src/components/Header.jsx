@@ -5,6 +5,7 @@ import { IoMdGitCompare, IoMdHeartEmpty } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbCategory } from "react-icons/tb";
+import logo from "../assets/logo.png"
 
 const Header = () => {
   return (
@@ -22,8 +23,8 @@ const Header = () => {
 
       {/* Second nav*/}
       <div className="flex justify-between px-2 lg:justify-between items-center py-4 lg:px-8 bg-[#142537]">
-        <div>
-          <Link> BUZZ STORE!</Link>
+        <div className="w-48 flex items-center justify-center relative left-16">
+          <Link to="/"> <img src={logo} alt="logo_img" className="w-full h-full object-cover"/></Link>
         </div>
         <div className="lg:flex items-center max-w-md mx-auto px-3 border border-main-color rounded-xl w-96 hidden">
           <input

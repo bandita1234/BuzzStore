@@ -143,6 +143,7 @@ const deleteproduct = async(req,res)=>{
 //ROUTE 6: ADDING PRODUCTS TO WISHLIST
 const addToWishlist = async (req, res) => {
   const { _id } = req?.user;
+  console.log(_id);
   const { prodId } = req.body;
   try {
     const user = await User.findById(_id);

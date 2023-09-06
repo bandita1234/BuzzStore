@@ -7,6 +7,7 @@ const fetchUser = async (req, res, next) => {
   //Get the user from the jwt token and add id to req object
 
   const token = req?.header("authToken"); //get the token(name-"auth-token") from the header
+  // console.log("TOKEN",token);
   if (!token) {
     res.status(401).send({ Error: "Please login to continue!" });
   }
@@ -14,7 +15,6 @@ const fetchUser = async (req, res, next) => {
   try {
     //If present,verify the token with the secret
     const data = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(data);
     const user = await User.findById(data?.id);
     // console.log(user);
     req.user = user; //Got the user!

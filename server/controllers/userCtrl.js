@@ -285,6 +285,7 @@ const blockUser = async (req, res) => {
     res.status(500).send("Internal server Error!");
   }
 };
+
 //ROUTE 8 : UNBLOCK A USER (ONLY ADMIN CAN DO THIS)
 const unblockUser = async (req, res) => {
   try {
@@ -385,10 +386,11 @@ const resetPassword = async (req, res) => {
 //ROUTE 15: GET WISHLIST OF USER
 const getWishlist = async (req, res) => {
   const { _id } = req.user;
+  // console.log(_id);
   validateMongodbId(_id);
   try {
     const findUser = await User.findById(_id).populate("wishlist");
-    res.json(findUser);
+    return res.json(findUser);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");

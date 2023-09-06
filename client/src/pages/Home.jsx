@@ -62,14 +62,14 @@ const Home = () => {
             modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
             // spaceBetween={50}
             slidesPerView={1}
-            //   autoplay={{
-            //   delay: 2000,
-            //   disableOnInteraction: false,
-            // }}
+              autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
             pagination={{ clickable: true, el: ".swiper-pagination" }}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={() => console.log("slide change")}
           >
             <SwiperSlide className="">
               <div className="w-full h-full">

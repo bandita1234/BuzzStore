@@ -82,6 +82,7 @@ const OurStore = () => {
   useEffect(()=>{
     getproducts();
   },[])
+  
   return (
     <div className="">
       <Meta title="Our Store" />
@@ -357,13 +358,11 @@ const OurStore = () => {
 
           {/* Products */}
           <div className="flex flex-wrap">
-            <ProductCard data={productState}/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
+          {productState && productState.map((item)=>{
+            return(
+              <ProductCard item={item}/>
+            )
+          })}
           </div>
         </div>
       </div>
