@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ContactService } from './ContactService'
-import {toast} from 'react-toastify'
+// import {toast} from 'react-toastify'
 
 export const createQuery = createAsyncThunk("contact/post",async(contactData , thunkAPI)=>{
     try {
