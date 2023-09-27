@@ -11,6 +11,9 @@ const brandRouter = require('./routes/brandRoute');
 const couponRouter = require('./routes/couponRoute')
 const colorRouter = require('./routes/colorRoute')
 const enquiryRouter = require('./routes/enquiryRoute')
+
+const Router = require('./routes/Route')
+
 const morgan = require('morgan')
 connectToMongo();
 var cookieParser = require('cookie-parser')
@@ -23,6 +26,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
+
+app.use('/',Router);
 
 app.use('/api/user',authRouter);
 app.use('/api/product',productRouter);
