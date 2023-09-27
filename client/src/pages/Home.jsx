@@ -14,7 +14,7 @@ import "swiper/css/pagination";
 import Marquee from "react-fast-marquee";
 
 // import ProductCard from "../components/ProductCard"
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/productCard";
 import BlogCard from "../components/BlogCard";
 import SpecialProducts from "../components/SpecialProducts";
 
