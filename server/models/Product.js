@@ -42,7 +42,7 @@ const ProductSchema = new Schema(
     },
     images: [],
     color: [],
-    tags: String,
+    tag: String,
     ratings: [
       {
         star: Number,

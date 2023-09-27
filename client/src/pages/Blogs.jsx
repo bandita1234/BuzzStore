@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
 import BlogCard from "../components/BlogCard";
 
+import { getAllBlogs } from "../features/blogs/BlogSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 const Blogs = () => {
+  const dispatch = useDispatch();
+  const blogState = useSelector((state) => state.blog.blog);
+  // console.log(blogState);
+
+  const getblogs = () => {
+    dispatch(getAllBlogs());
+  };
+
+  useEffect(() => {
+    getblogs();
+  }, []);
+
   return (
     <div>
       <Meta title="Blogs" />
@@ -26,13 +41,17 @@ const Blogs = () => {
         </div>
 
         <div className="flex flex-wrap w-full">
+          {blogState &&
+            blogState?.map((item) => {
+              return <BlogCard key={item._id} item={item}  />;
+            })}
+
+          {/* <BlogCard />
           <BlogCard />
           <BlogCard />
           <BlogCard />
           <BlogCard />
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
+          <BlogCard /> */}
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ const SpecialProducts = () => {
               alt=""
               className="h-full w-full object-contain rounded-lg"
             />
+            {/* <button>Add to cart</button> */}
           </div>
         </div>
         <div className="w-1/2 px-4 py-2">

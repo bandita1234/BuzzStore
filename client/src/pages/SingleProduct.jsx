@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import ReactStars from "react-rating-stars-component";
 import headphone_img from "../assets/main_headphone.avif";
@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { AiOutlineLink } from "react-icons/ai";
 import ProductCard from "../components/ProductCard"
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "../features/product/ProductSlice";
 
 const SingleProduct = () => {
   const [ordedProduct, setOrdedProduct] = useState(true);
@@ -30,6 +32,19 @@ const SingleProduct = () => {
         console.error("Failed to copy image link: ", error);
       });
   };
+
+  const productState = useSelector((state)=>state.product.product)
+  // console.log(productState);
+  const dispatch = useDispatch();
+
+  
+  const getproducts = ()=>{
+    dispatch(getAllProducts());
+  }
+  
+  useEffect(()=>{
+    getproducts();
+  },[])
 
   return (
     <div>
@@ -314,12 +329,13 @@ const SingleProduct = () => {
 
       {/* You may also like */}
       <div>
-        <h2>You may also like</h2>
+        <h2 className="text-2xl  text-main-color ml-3  text-center my-4">You may also like</h2>
         <div className="flex flex-wrap">
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
+        {productState && productState.map((item)=>{
+            return(
+              <ProductCard item={item}/>
+            )
+          })}
         </div>
       </div>
     </div>

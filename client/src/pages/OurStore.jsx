@@ -17,11 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const OurStore = () => {
-
-  const productState = useSelector((state)=>state.product.product)
-  // console.log(productState);
-  const dispatch = useDispatch();
-
   const [colArr, setcolArr] = useState([
     "#FF6633",
     "#FFB399",
@@ -75,10 +70,15 @@ const OurStore = () => {
     "#6666FF",
   ]);
 
+  const productState = useSelector((state)=>state.product.product)
+  // console.log(productState);
+  const dispatch = useDispatch();
+
+  
   const getproducts = ()=>{
     dispatch(getAllProducts());
   }
-
+  
   useEffect(()=>{
     getproducts();
   },[])

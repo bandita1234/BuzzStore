@@ -39,6 +39,7 @@ const ProductCard = (props) => {
           >
             {showFirstImage ? (
               <img
+                // src={item?.images[0]?.url}
                 src={watch_img}
                 alt="product"
                 className="h-full w-full object-contain rounded-lg"

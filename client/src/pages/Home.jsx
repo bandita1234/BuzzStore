@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Autoplay,
@@ -50,8 +50,35 @@ import brand5 from "../assets/brand-05.png";
 import brand6 from "../assets/brand-06.png";
 import brand7 from "../assets/brand-07.png";
 import brand8 from "../assets/brand-08.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "../features/product/ProductSlice";
+
+import { getAllBlogs } from "../features/blogs/BlogSlice";
 
 const Home = () => {
+  const productState = useSelector((state)=>state.product.product)
+  // console.log(productState);
+  const dispatch = useDispatch();
+
+  
+  const getproducts = ()=>{
+    dispatch(getAllProducts());
+  }
+  
+  
+  const blogState = useSelector((state) => state.blog.blog);
+  // console.log(blogState);
+  
+  const getblogs = () => {
+    dispatch(getAllBlogs());
+  };
+  
+  useEffect(()=>{
+    getproducts();
+    getblogs();
+  },[])
+
+
   return (
     <>
       {/* Main Page */}
@@ -347,18 +374,20 @@ const Home = () => {
 
       {/* Product Section */}
       <div>
-        <h2>Our Featured Collections</h2>
+        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Featured Collections</h2>
+        {/* change the heading */}
         <div className="flex flex-wrap justify-center">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+        {productState && productState.map((item)=>{
+            return(
+              <ProductCard item={item}/>
+            )
+          })}
         </div>
       </div>
 
       {/* Special Products */}
       <div>
-        <h2>Our Special Products</h2>
+        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Special Products</h2>
         <div className="flex flex-wrap">
           <SpecialProducts />
           <SpecialProducts />
@@ -369,12 +398,13 @@ const Home = () => {
 
       {/* Popular Product */}
       <div>
-        <h2>Our Popular Products</h2>
+        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Popular Products</h2>
         <div className="flex flex-wrap justify-center">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+        {productState && productState.map((item)=>{
+            return(
+              <ProductCard item={item}/>
+            )
+          })}
         </div>
       </div>
 
@@ -410,12 +440,19 @@ const Home = () => {
 
       {/* Blog Section */}
       <div>
-        <h2>Our Latest Blogs</h2>
+        <h2 className="text-4xl  text-main-color ml-3 text-center my-6">Our Latest Blogs</h2>
         <div className="flex flex-wrap justify-evenly mt-3 px-3">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
+        {
+          blogState && blogState?.map((item,idx)=>{
+            if(idx<4){
+            return(
+              <BlogCard key={idx} item={item}/>
+            )
+            }
+          })
+        }
+          {/* <BlogCard />
+          <BlogCard /> */}
         </div>
       </div>
     </>

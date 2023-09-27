@@ -9,7 +9,7 @@ const {
 const { fetchUser, isAdmin } = require("../middlewires/fetchUser");
 const router = express.Router();
 
-router.post("/create", fetchUser, isAdmin, createEnquiry);
+router.post("/create", createEnquiry);
 router.put("/update/:id", fetchUser, isAdmin, updateEnquiry);
 router.delete("/delete/:id", fetchUser, isAdmin, deleteEnquiry);
 router.get("/getEnquiry/:id", getEnquiry);

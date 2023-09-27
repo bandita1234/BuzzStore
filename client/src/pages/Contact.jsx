@@ -1,11 +1,33 @@
 import React from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
+// import { useFormik } from "formik";
+// import * as yup from "yup";
 
 //icons
 import {FaHome,FaPhoneAlt} from 'react-icons/fa'
 import {MdEmail} from 'react-icons/md'
 import {FiInfo} from 'react-icons/fi'
+
+// const ContactSchema = yup.object({
+//   name: yup.string().required("Name is required !"),
+//   email: yup.string().nullable().email("Email should be valid !"),
+//   mobile: yup.string().required("Mobile Number is required !"),
+//   comment: yup.string().required("Comment is required !"),
+// });
+
+// const formik = useFormik({
+//   initialValues: {
+//     name: "",
+//     email: "",
+//     mobile: "",
+//     comment: "",
+//   },
+//   validationSchema: ContactSchema,
+//   // onSubmit: (values) => {
+//   //   dispatch(registerUser(values));
+//   // },
+// });
 
 const Contact = () => {
   return (
@@ -91,7 +113,9 @@ const Contact = () => {
               >
                 Comment
               </label>
-            </div>  
+            </div> 
+
+            <button>Submit</button> 
           </div>
 
           <div className="flex flex-col gap-3 text-sm lg:text-lg">

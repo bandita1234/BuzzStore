@@ -1,5 +1,5 @@
 import React from "react";
-import {useDispatch} from 'react-redux'
+import { useDispatch } from "react-redux";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { Link } from "react-router-dom";

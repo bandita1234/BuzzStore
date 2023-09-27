@@ -6,6 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 import watch_img from "../assets/watch_img.avif";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserWishlist } from "../features/user/UserSlice";
+import { addToWishlist } from "../features/product/ProductSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,22 @@ const Wishlist = () => {
   }, []);
 
   const wishlistState = useSelector((state) => state.auth?.wishlist?.wishlist);
+  // console.log(wishlistState);
+
+  const removeFromWishlist = (id) => {
+    dispatch(addToWishlist(id));
+    setTimeout(() => {
+      dispatch(getUserWishlist());
+    }, 300);
+  };
   return (
     <div>
       <Meta title="Wishlist" />
       <BreadCrumb title="Wishlist" />
       <div className="flex flex-wrap item-center sm:gap-5 lg:gap-10 lg:mx-10 m-2">
+      {wishlistState?.length == 0 && <div className="text-xl">Oops! Your wishlist is empty. <Link to="/product" className="text-main-color">Shop here!</Link></div>}
         {wishlistState?.map((item, idx) => (
-          <div className=" relative w-1/2 sm-w-1/3 max-w-xs md:w-1/4 lg:w-1/6 h-full object-cover bg-box-background rounded-xl shadow-lg border-2 border-border-color cursor-pointer min-h-[300px]">
+          <div key={idx} className=" relative w-1/2 sm-w-1/3 max-w-xs md:w-1/4 lg:w-1/6 h-full object-cover bg-box-background rounded-xl shadow-lg border-2 border-border-color cursor-pointer min-h-[300px]">
             <div className="mb-3 relative">
               <img
                 src={watch_img}
@@ -33,7 +43,10 @@ const Wishlist = () => {
                 className="h-full w-full rounded-xl"
               />
             </div>
-            <Link className="absolute top-0 right-0 rounded-full bg-box-background w-8 h-8 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
+            <Link
+              className="absolute top-0 right-0 rounded-full bg-box-background w-8 h-8 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500"
+              onClick={() => removeFromWishlist(item?._id)}
+            >
               <RxCross2 />
             </Link>
             <div className="space-y-2 p-2 text-center">
