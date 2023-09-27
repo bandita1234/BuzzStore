@@ -4,7 +4,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 
 import watch_img from "../assets/watch_img.avif";
-import ProductCard from "../components/ProductCard"
+import ProductCard from "../components/productCard"
 import {getAllProducts} from '../features/product/ProductSlice'
 
 //icons

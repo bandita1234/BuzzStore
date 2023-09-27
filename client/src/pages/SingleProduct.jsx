@@ -8,7 +8,7 @@ import { IoMdGitCompare, IoMdHeartEmpty } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { AiOutlineLink } from "react-icons/ai";
-import ProductCard from "../components/ProductCard"
+import ProductCard from "../components/productCard"
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../features/product/ProductSlice";
 
