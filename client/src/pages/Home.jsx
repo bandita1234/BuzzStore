@@ -33,7 +33,7 @@ import main_watch from "../assets/main_watch.avif";
 
 import laptop_img from "../assets/laptop_img.avif";
 import camera_img from "../assets/camera_img.avif";
-import tv_img from "../assets/tv_img.avif";
+import tv_img from "../assets/TV_img.avif";
 import watch_img from "../assets/watch_img.avif";
 import gaming_img from "../assets/gaming_img.avif";
 import phone_img from "../assets/phone_img.avif";
