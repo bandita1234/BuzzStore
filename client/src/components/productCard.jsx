@@ -5,7 +5,7 @@ import main_watch from "../assets/main_watch.avif";
 import { Link } from "react-router-dom";
 import {addToWishlist} from '../features/product/ProductSlice'
 
-//Icons
+//React Icons
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BiShuffle, BiShoppingBag } from "react-icons/bi";
 import { AiOutlineEye } from "react-icons/ai";
