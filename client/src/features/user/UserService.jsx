@@ -38,6 +38,16 @@ const getWishlist =  async()=>{
     }
 }
 
+const addToCart = async(cartData) =>{
+    try {
+        const res = axios.post(`${BASE_URL}/user/cart`,cartData,config);
+        console.log(res);
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const authService = {
-    register,login,getWishlist
+    register,login,getWishlist,addToCart
 }

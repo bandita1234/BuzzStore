@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import watch_img from "../assets/watch_img.avif";
 import main_watch from "../assets/main_watch.avif";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {addToWishlist} from '../features/product/ProductSlice'
 
 //React Icons
@@ -12,6 +12,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 
 const ProductCard = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { item } = props;
   // console.log(item);
@@ -28,9 +29,10 @@ const ProductCard = (props) => {
     // alert(id);
     dispatch(addToWishlist(id)); 
   }
+  
   return (
     <div className="px-1 py-2 sm:p-4 lg:w-1/4 w-1/2">
-      <Link to="/product/:id">
+      <Link to={`/product/${item?._id}`}>
         <div className="w-full max-w-xs mx-auto rounded-lg shadow-lg border-2 border-border-color bg-box-background cursor-pointer min-h-[400px]">
           <div
             className="relative text-center overflow-hidden w-full border-b-4 border-border-color group"
@@ -40,13 +42,13 @@ const ProductCard = (props) => {
             {showFirstImage ? (
               <img
                 // src={item?.images[0]?.url}
-                src={watch_img}
+                src={item?.images[0]}
                 alt="product"
                 className="h-full w-full object-contain rounded-lg"
               />
             ) : (
               <img
-                src={main_watch}
+                src={item?.images[1] ? item?.images[1] : item?.images[0]}
                 alt="second_watch"
                 // className="hidden"
                 className="h-full w-full object-contain rounded-lg"

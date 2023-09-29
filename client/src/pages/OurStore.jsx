@@ -15,6 +15,7 @@ import { FiBarChart2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import Color from "../components/Color";
 
 const OurStore = () => {
   const [colArr, setcolArr] = useState([
@@ -180,6 +181,7 @@ const OurStore = () => {
             {/* Colors */}
             <div className="mb-3">
               <h2 className="text-main-color text-lg">Colors</h2>
+              {/* <Color/> */}
               <div className="flex flex-wrap">
                 {colArr.map((item) => (
                   <div key={item}

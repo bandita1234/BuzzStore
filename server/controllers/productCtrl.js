@@ -48,7 +48,7 @@ const getaproduct = async (req, res) => {
   try {
     const { id } = req.params;
     validateMongodbId(id);
-    const getproduct = await Product.findById(id);
+    const getproduct = await Product.findById(id).populate("color");
     res.json(getproduct);
   } catch (error) {
     console.error(error.message);

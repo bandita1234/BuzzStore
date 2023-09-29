@@ -17,7 +17,19 @@ const getProducts = async()=>{
 const addToWishList = async(prodId)=>{
     try {
         const response = await axios.put(`${BASE_URL}/product/wishlist`,{prodId},config);
-        console.log(response);
+        // console.log(response);
+        if(response.data){
+            return response.data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getAProduct = async(prodId) =>{
+    try {
+        const response = await axios.get(`${BASE_URL}/product/${prodId}`);
+        // console.log(response);
         if(response.data){
             return response.data;
         }
@@ -28,5 +40,5 @@ const addToWishList = async(prodId)=>{
 
 
 export const productService = {
-    getProducts, addToWishList
+    getProducts, addToWishList,getAProduct
 }

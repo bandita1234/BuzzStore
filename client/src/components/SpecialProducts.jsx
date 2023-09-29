@@ -1,7 +1,7 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
 import watch_img from "../assets/watch_img.avif";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //Icons
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -9,6 +9,10 @@ import { BiShuffle, BiShoppingBag } from "react-icons/bi";
 import { AiOutlineEye } from "react-icons/ai";
 
 const SpecialProducts = () => {
+  const navigate = useNavigate();
+  // const handleClick = () =>{
+  //   navigate("product/{item?._id}")
+  // }
   return (
     <div className="px-1 py-2 sm:p-4 lg:w-1/3 w-full">
       <div className="flex w-full mx-auto rounded-lg shadow-lg border-2 border-border-color bg-box-background cursor-pointer">
@@ -71,7 +75,7 @@ const SpecialProducts = () => {
             </div>
 
             <div>
-                <button>Options</button>
+                <button>View</button>
             </div>
         </div>
       </div>

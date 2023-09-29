@@ -41,7 +41,7 @@ const ProductSchema = new Schema(
       // select:false  //IF U WANT TO HIDE THIS THING FROM THE USER, ADD select:false
     },
     images: [],
-    color: [],
+    color: [{type: mongoose.Schema.Types.ObjectId, ref: "Color"}],
     tag: String,
     ratings: [
       {
