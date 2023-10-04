@@ -4,6 +4,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import FormButtons from "../components/FormButtons";
 
 const ResetPassword = () => {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ const ResetPassword = () => {
             </label>
           </div>
           <div>
-            <button onClick={handleSubmit}>OK</button>
+            <FormButtons handleClick={handleSubmit} text="Ok" />
           </div>
         </div>
       </div>

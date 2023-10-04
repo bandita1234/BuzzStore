@@ -5,14 +5,19 @@ import headphone_img from "../assets/main_headphone.avif";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { IoMdGitCompare, IoMdHeartEmpty } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { AiOutlineLink } from "react-icons/ai";
 import ProductCard from "../components/productCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAProduct, getAllProducts } from "../features/product/ProductSlice";
+import { addToCart, getCart } from "../features/user/UserSlice";
+import Color from "../components/Color";
+import { toast } from "react-toastify";
+import Button from "../components/Button";
 
 const SingleProduct = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const product_id = location.pathname.split("/")[2];
@@ -20,6 +25,13 @@ const SingleProduct = () => {
 
   const [ordedProduct, setOrdedProduct] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [color, setColor] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  // console.log(color);
+
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
+// console.log(alreadyAdded);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -29,13 +41,30 @@ const SingleProduct = () => {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        alert("Product link copied to clipboard!");
+        toast("Product link copied to clipboard!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch((error) => {
-        console.error("Failed to copy Product link: ", error);
+        toast.error("Sorry, Failed to Copy Product link now!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   };
-
   const getASingleProduct = () => {
     dispatch(getAProduct(product_id));
   };
@@ -46,15 +75,55 @@ const SingleProduct = () => {
   const singleProductState = useSelector(
     (state) => state?.product?.singleProduct
   );
-  console.log(singleProductState);
+  // console.log(singleProductState);
 
   const getproducts = () => {
     dispatch(getAllProducts());
   };
 
+  const uploadToCart = () => {
+    // console.log("abcd");
+    if (!color) {
+      toast.error("Please Select a Color!!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      dispatch(
+        addToCart({
+          productId: singleProductState?._id,
+          color: color,
+          price: singleProductState?.price,
+          quantity: quantity,
+        })
+      );
+      navigate("/cart");
+    }
+    // alert("Added to cart")
+  };
+
+  const cartState = useSelector((state) => state?.auth?.cartItems);
+  // console.log(product_id);
+  // console.log(cartState);
+
   useEffect(() => {
     getproducts();
     getASingleProduct();
+    dispatch(getCart());
+  }, []);
+
+  useEffect(() => {
+    for (let index = 0; index < cartState?.length; index++) {
+      if (product_id === cartState[index]?.productId?._id) {
+        setAlreadyAdded(true);
+      }
+    }
   }, []);
 
   return (
@@ -71,7 +140,9 @@ const SingleProduct = () => {
               {...{
                 smallImage: {
                   alt: "Wristwatch by Ted Baker London",
-                  isFluidWidth: true,
+                  // isFluidWidth: true,
+                  width: 700,
+                  height: 600,
                   src: singleProductState?.images[0],
                 },
                 largeImage: {
@@ -103,8 +174,10 @@ const SingleProduct = () => {
         </div>
 
         <div className="flex-1 bg-box-background p-8 rounded-lg border border-border-color">
-          <h3>{singleProductState?.title}</h3>
-          <h3>₹{singleProductState?.price}</h3>
+          <h3 className="customh3">{singleProductState?.title}</h3>
+          <h3 className="customh3 font-bold text-2xl">
+            ₹{singleProductState?.price}
+          </h3>
           <div className="flex items-center gap-2">
             <ReactStars
               count={5}
@@ -119,27 +192,29 @@ const SingleProduct = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <p>Type : </p>
-              <p>{singleProductState?.category}</p>
+              <p className="customh3">{singleProductState?.category}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <p>Brand : </p>
-              <p>{singleProductState?.brand}</p>
+              <p className="customh3">{singleProductState?.brand}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <p>Categories : </p>
-              <p>{singleProductState?.category}</p>
+              <p className="customh3">{singleProductState?.category}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <p>Tags : </p>
-              <p>{singleProductState?.tag}</p>
+              <p className="bg-product-descripion font-bold text-[#21594c] rounded-lg px-2">
+                {singleProductState?.tag}
+              </p>
             </div>
 
             <div className="flex items-center gap-2">
               <p>Availibility : </p>
-              <p>In Stock</p>
+              <p className="customh3">In Stock</p>
             </div>
 
             {/* <div>
@@ -160,49 +235,52 @@ const SingleProduct = () => {
               </div>
             </div> */}
 
-            <div>
-              <p>Colors : </p>
-              <div className="flex flex-wrap">
-                {singleProductState?.color ? (
-                  singleProductState?.color?.map((item) => (
-                    <div
-                      key={item}
-                      className={`m-1 h-8 w-8 rounded-full`}
-                      style={{ backgroundColor: item }}
-                    ></div>
-                  ))
-                ) : (
-                  <p>Sorry! No other colors availble for this product</p>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <p>Quantity : </p>
+            {alreadyAdded == false && (
               <div>
-                <input
-                  type="number"
-                  style={{ width: "70px" }}
-                  className="bg-box-background border-main-color border-2"
-                  min={1}
-                  max={10}
+                <p>Colors : </p>
+                <Color
+                  colorData={singleProductState?.color}
+                  setColor={setColor}
+                  color={color}
                 />
               </div>
-            </div>
+            )}
+
+            {alreadyAdded == false && (
+              <div className="flex items-center gap-2">
+                <p>Quantity : </p>
+                <div>
+                  <input
+                    type="number"
+                    style={{ width: "70px" }}
+                    className="bg-box-background border-main-color border-2"
+                    min={1}
+                    max={10}
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex gap-2">
-              <button>ADD TO CART</button>
-              <button>BUY NOW</button>
+              <Button
+                handleClick={() => {
+                  alreadyAdded ? navigate("/cart") : uploadToCart();
+                }}
+                text={alreadyAdded ? "GO TO CART" : "ADD TO CART"}
+              />
+              <Button text=" BUY NOW" />
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 <IoMdHeartEmpty />
-                <Link>Add to Wishlist</Link>
+                <Link className="customh3">Add to Wishlist</Link>
               </div>
               <div className="flex items-center gap-1">
                 <IoMdGitCompare />
-                <Link>Add to compare</Link>
+                <Link className="customh3">Add to compare</Link>
               </div>
             </div>
 
@@ -254,6 +332,19 @@ const SingleProduct = () => {
               )}
             </div>
 
+            {/* Description */}
+            <div>
+              <h2 className="text-main-color text-2xl text-left mt-10 mb-4 font-semibold">
+                {" "}
+                Product Details
+              </h2>
+              <div className="bg-box-background">
+                <p className="text-product-descripion">
+                  {singleProductState?.description}
+                </p>
+              </div>
+            </div>
+
             {/* Payment Methods */}
             {/* <div className="">
               <h2>Payment Methods</h2>
@@ -262,14 +353,6 @@ const SingleProduct = () => {
               </div>
             </div> */}
           </div>
-        </div>
-      </div>
-
-      {/* Description */}
-      <div>
-        <h2 className="mb-3">Details</h2>
-        <div className="bg-box-background p-4">
-          <p>{singleProductState?.description}</p>
         </div>
       </div>
 
@@ -335,7 +418,6 @@ const SingleProduct = () => {
             })}
         </div>
       </div>
-
     </div>
   );
 };

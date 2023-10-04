@@ -374,7 +374,7 @@ const Home = () => {
 
       {/* Product Section */}
       <div>
-        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Featured Collections</h2>
+        <h2 className="heading">Our Featured Collections</h2>
         {/* change the heading */}
         <div className="flex flex-wrap justify-center">
         {productState && productState.map((item)=>{
@@ -387,7 +387,7 @@ const Home = () => {
 
       {/* Special Products */}
       <div>
-        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Special Products</h2>
+        <h2 className="heading">Our Special Products</h2>
         <div className="flex flex-wrap">
           <SpecialProducts />
           <SpecialProducts />
@@ -398,7 +398,7 @@ const Home = () => {
 
       {/* Popular Product */}
       <div>
-        <h2 className="text-2xl  text-main-color ml-3  text-center my-6">Our Popular Products</h2>
+        <h2 className="heading">Our Popular Products</h2>
         <div className="flex flex-wrap justify-center">
         {productState && productState.map((item)=>{
             return(
@@ -440,7 +440,7 @@ const Home = () => {
 
       {/* Blog Section */}
       <div>
-        <h2 className="text-4xl  text-main-color ml-3 text-center my-6">Our Latest Blogs</h2>
+        <h2 className="heading">Our Latest Blogs</h2>
         <div className="flex flex-wrap justify-evenly mt-3 px-3">
         {
           blogState && blogState?.map((item,idx)=>{

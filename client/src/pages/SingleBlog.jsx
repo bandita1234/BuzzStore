@@ -7,6 +7,8 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getABlog } from "../features/blogs/BlogSlice";
+import Button from "../components/Button";
+import FormButtons from "../components/FormButtons";
 
 const SingleBlog = () => {
   const dispatch = useDispatch();
@@ -133,7 +135,7 @@ const SingleBlog = () => {
               </label>
             </div>
             <div>
-              <button>Post Comment</button>
+              <FormButtons text="Submit"/>
             </div>
           </div>
         </div>

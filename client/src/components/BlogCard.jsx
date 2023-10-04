@@ -1,6 +1,7 @@
 import React from "react";
 import blog_img from "../assets/blog_img.avif";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 const BlogCard = (props) => {
   const { item } = props;
@@ -50,7 +51,7 @@ const BlogCard = (props) => {
           <p className="text-gray-700 text-base line-clamp-2">{item?.description}</p>
         </div>
         <div className="px-6 pt-4 pb-2">
-          <button onClick={handleSubmit}>Read More</button>
+          <Button handleClick={handleSubmit} text="Read More" />
         </div>
       </div>
     </div>

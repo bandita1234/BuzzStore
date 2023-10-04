@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../../utils/axiosConfig';
+import { toast } from 'react-toastify';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const register = async(userData)=>{
@@ -40,14 +41,31 @@ const getWishlist =  async()=>{
 
 const addToCart = async(cartData) =>{
     try {
-        const res = axios.post(`${BASE_URL}/user/cart`,cartData,config);
-        console.log(res);
+        const res = await axios.post(`${BASE_URL}/user/cart`,cartData,config);
+        // console.log(res);
+        if(res.data){
+            return res.data;
+        }
         
     } catch (error) {
         console.log(error);
+        throw error; 
     }
 }
 
+const getCart = async() =>{
+    try {
+        const res = await axios.get(`${BASE_URL}/user/getcart`,config);
+        // console.log(res.data);
+        if(res.data){
+            return res.data;
+        }
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
 export const authService = {
-    register,login,getWishlist,addToCart
+    register,login,getWishlist,addToCart,getCart
 }

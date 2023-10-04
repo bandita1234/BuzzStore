@@ -1,11 +1,13 @@
 import React from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/user/UserSlice";
+import Button from "../components/Button"
+import FormButtons from "../components/FormButtons";
 
 const LoginSchema = yup.object({
   email: yup.string().nullable().email("Email should be valid !"),
@@ -13,6 +15,7 @@ const LoginSchema = yup.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -22,6 +25,9 @@ const Login = () => {
     validationSchema: LoginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     },
   });
   return (
@@ -29,8 +35,11 @@ const Login = () => {
       <Meta title="Login" />
       <BreadCrumb title="Login" />
       <div className="flex justify-center items-center mt-6">
-        <form className=" md:w-1/3 bg-box-background text-center p-6 m-auto rounded-xl space-y-2"  onSubmit={formik.handleSubmit}>
-          <h2 className="mb-3">Login</h2>
+        <form
+          className=" md:w-1/3 bg-box-background text-center p-6 m-auto rounded-xl space-y-2"
+          onSubmit={formik.handleSubmit}
+        >
+          <h2 className="heading">Login</h2>
 
           <div className="relative">
             <input
@@ -84,7 +93,7 @@ const Login = () => {
           </div>
 
           <div>
-            <button type="submit">Login</button>
+            <FormButtons text="Login"/>
           </div>
 
           <div className="mt-4">

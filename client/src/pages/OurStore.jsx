@@ -359,7 +359,7 @@ const OurStore = () => {
           </div>
 
           {/* Products */}
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-10 justify-center items-center">
           {productState && productState.map((item)=>{
             return(
               <ProductCard item={item}/>

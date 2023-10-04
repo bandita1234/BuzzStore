@@ -421,11 +421,10 @@ const saveAddress = async (req, res, next) => {
 
 //ROUTE 17: ADD TO CART FUNCTINALITY
 const userCart = async (req, res) => {
-  const { productId , color , quantity , price } = req.body;
+  const { productId, color, quantity, price } = req.body;
   const { _id } = req?.user;
   validateMongodbId(_id);
   try {
-
     // let products = [];
     // const user = await User.findById(_id);
     // // check if user already have product in cart
@@ -451,11 +450,11 @@ const userCart = async (req, res) => {
     // console.log(products,cartTotal);
 
     let newCart = await new Cart({
-    userId : _id,
+      userId: _id,
       productId,
       color,
       quantity,
-      price
+      price,
     }).save();
     res.json(newCart);
   } catch (error) {
@@ -469,9 +468,9 @@ const getUserCart = async (req, res) => {
   const { _id } = req?.user;
   validateMongodbId(_id);
   try {
-    const cart = await Cart.findOne({ orderby: _id }).populate(
-      "products.product"
-    );
+    const cart = await Cart.find({ userId: _id })
+      .populate("productId")
+      .populate("color");
     res.json(cart);
   } catch (error) {
     console.error(error.message);
@@ -479,19 +478,52 @@ const getUserCart = async (req, res) => {
   }
 };
 
-//ROUTE 19: EMPTY CART
+//ROUTE XXX(ADDED LATER) : Delete a single product from Cart
+
+const deleteProductFromCart = async (req, res) => {
+  const { _id } = req?.user;
+  const { cartId } = req.params;
+  validateMongodbId(_id);
+  // console.log(cartId);
+  try {
+    const deletedProduct = await Cart.findByIdAndDelete(cartId).populate(
+      "productId"
+    );
+    res.json(deletedProduct);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
+
+//ROUTE 19: Empty CART
 const emptyCart = async (req, res) => {
   const { _id } = req?.user;
   validateMongodbId(_id);
   try {
-    // const user = await User.findOne({ _id });
-    const cart = await Cart.findOneAndRemove({ orderby: _id });
+    const user = await User.findOne({ _id });
+    const cart = await Cart.findOneAndRemove({ userId: user._id });
     res.json(cart);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
   }
 };
+
+//ROUTE 19: Delete a product from CART
+// const emptyCart = async (req, res) => {
+//   const { _id } = req?.user;
+//   const {cartId} = req.params;
+//   validateMongodbId(_id);
+//   // console.log(cartId);
+//   try {
+//    const deletedProduct = await Cart.findByIdAndDelete(cartId).populate("productId");
+//    res.json(deletedProduct);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).send("Internal server Error!");
+//   }
+// };
 
 //ROUTE 20: APPLY COUPON
 const applyCoupon = async (req, res) => {
@@ -634,5 +666,6 @@ module.exports = {
   applyCoupon,
   createOrder,
   getOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  deleteProductFromCart
 };

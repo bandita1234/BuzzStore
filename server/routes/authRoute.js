@@ -24,6 +24,7 @@ const {
   createOrder,
   getOrders,
   updateOrderStatus,
+  deleteProductFromCart,
 } = require("../controllers/userCtrl");
 const { body } = require("express-validator");
 const { fetchUser, isAdmin } = require("../middlewires/fetchUser");
@@ -76,6 +77,7 @@ router.get("/wishlist", fetchUser, getWishlist);
 router.get("/cart/getorders",fetchUser,getOrders)
 router.put("/save-address", fetchUser, saveAddress);
 router.get("/:id", fetchUser, isAdmin, getaUser);
+router.delete("/cart/delete/:cartId", fetchUser, deleteProductFromCart);
 router.delete("/emptycart", fetchUser, emptyCart);
 router.delete("/:id", deleteUser);
 router.put("/update-user", fetchUser, updateUser);

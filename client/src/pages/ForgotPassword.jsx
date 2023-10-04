@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -16,8 +17,8 @@ const ForgotPassword = () => {
       <div>
         <div className="flex justify-center items-center mt-6">
           <div className="md:w-1/3 bg-box-background text-center p-6 m-auto rounded-xl">
-            <h2 className="mb-3">Forgot Password</h2>
-            <p className="mb-3 text-product-descripion text-xs">
+            <h2 className="heading">Forgot Password</h2>
+            <p className="mb-3 text-product-descripion text-sm">
               Forgot Password? Don't worry, We'll send you an email to reset
               your password !
             </p>
@@ -35,9 +36,10 @@ const ForgotPassword = () => {
                 Email
               </label>
             </div>
-            <div>
-              <button onClick={handleSubmit} className="mr-4">Send</button>
-              <Link to="/login">Cancel</Link>
+            <div className="flex gap-4 justify-center items-center">
+              {/* <button onClick={handleSubmit} className="mr-4">Send</button> */}
+              <Button text= "Send" handleClick={handleSubmit} />
+              <Button handleClick={navigate("/login")} text="Cancel" />
             </div>
           </div>
         </div>

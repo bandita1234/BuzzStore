@@ -36,9 +36,9 @@ const Wishlist = () => {
       {wishlistState?.length == 0 && <div className="text-xl">Oops! Your wishlist is empty. <Link to="/product" className="text-main-color">Shop here!</Link></div>}
         {wishlistState?.map((item, idx) => (
           <div key={idx} className=" relative w-1/2 sm-w-1/3 max-w-xs md:w-1/4 lg:w-1/6 h-full object-cover bg-box-background rounded-xl shadow-lg border-2 border-border-color cursor-pointer min-h-[300px]">
-            <div className="mb-3 relative">
+            <div className="mb-3 relative p-1">
               <img
-                src={watch_img}
+                src={item?.images[0]}
                 alt=""
                 className="h-full w-full rounded-xl"
               />

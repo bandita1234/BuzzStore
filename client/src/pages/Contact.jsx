@@ -5,9 +5,11 @@ import BreadCrumb from "../components/BreadCrumb";
 // import * as yup from "yup";
 
 //icons
-import {FaHome,FaPhoneAlt} from 'react-icons/fa'
-import {MdEmail} from 'react-icons/md'
-import {FiInfo} from 'react-icons/fi'
+import { FaHome, FaPhoneAlt } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { FiInfo } from "react-icons/fi";
+import Button from "../components/Button";
+import FormButtons from "../components/FormButtons";
 
 // const ContactSchema = yup.object({
 //   name: yup.string().required("Name is required !"),
@@ -51,7 +53,7 @@ const Contact = () => {
 
         <div className="flex items-center justify-center gap-3 lg:gap-20 bg-box-background mt-3 rounded-3xl">
           <div className="w-1/2">
-            <h2>Contact Us</h2>
+            <h2 className="heading">Contact Us</h2>
             <div className="relative mb-3">
               <input
                 type="text"
@@ -113,27 +115,28 @@ const Contact = () => {
               >
                 Comment
               </label>
-            </div> 
+            </div>
 
-            <button>Submit</button> 
+            <FormButtons text="Submit" />
+            
           </div>
 
           <div className="flex flex-col gap-3 text-sm lg:text-lg">
             <h2>Get In Touch With Us</h2>
             <div className="flex items-center gap-2">
-            <FaHome/>
+              <FaHome />
               <p>Saheed Nagr, Bhubaneswar</p>
             </div>
             <div className="flex items-center gap-2">
-            <FaPhoneAlt/>
+              <FaPhoneAlt />
               <p>(+91)8114852522</p>
             </div>
             <div className="flex items-center gap-2">
-            <MdEmail/>
+              <MdEmail />
               <p>barsasmile23@gmail.com</p>
             </div>
             <div className="flex items-center gap-2">
-            <FiInfo/>
+              <FiInfo />
               <p>Monday-Friday 10AM - 9PM</p>
             </div>
           </div>

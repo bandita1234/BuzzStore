@@ -10,6 +10,7 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { BiShuffle, BiShoppingBag } from "react-icons/bi";
 import { AiOutlineEye } from "react-icons/ai";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -27,15 +28,15 @@ const ProductCard = (props) => {
 
   const addProductToWishlist = (id) =>{
     // alert(id);
-    dispatch(addToWishlist(id)); 
+    dispatch(addToWishlist(id));
   }
   
   return (
     <div className="px-1 py-2 sm:p-4 lg:w-1/4 w-1/2">
       <Link to={`/product/${item?._id}`}>
-        <div className="w-full max-w-xs mx-auto rounded-lg shadow-lg border-2 border-border-color bg-box-background cursor-pointer min-h-[400px]">
+        <div className="w-[300px] max-w-xs mx-auto rounded-lg shadow-lg border-2 border-border-color bg-box-background cursor-pointer min-h-[400px]">
           <div
-            className="relative text-center overflow-hidden w-full border-b-4 border-border-color group"
+            className="relative text-center overflow-hidden h-[250px] w-full border-b-4 border-border-color group p-1 bg-[#fff] rounded-lg"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -51,7 +52,7 @@ const ProductCard = (props) => {
                 src={item?.images[1] ? item?.images[1] : item?.images[0]}
                 alt="second_watch"
                 // className="hidden"
-                className="h-full w-full object-contain rounded-lg"
+                className="h-full w-full object-cover rounded-lg"
               />
             )}
           </div>
@@ -63,7 +64,7 @@ const ProductCard = (props) => {
             <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
               <BiShuffle />
             </Link>
-            <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
+            <Link to={`/product/${item?._id}`} className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
               <AiOutlineEye />
             </Link>
             <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
@@ -82,7 +83,7 @@ const ProductCard = (props) => {
             <p className="text-sm sm:text-lg font-semibold text-main-color">
               {item?.brand}
             </p>
-            <h3 className="text-xs sm:text-base text-product-descripion mb-1">
+            <h3 className="text-xs sm:text-base text-product-descripion mb-1 line-clamp-1">
               {item?.title}
             </h3>
             <div className="flex justify-center">

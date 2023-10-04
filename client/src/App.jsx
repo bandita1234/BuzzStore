@@ -16,10 +16,25 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import SingleBlog from "./pages/SingleBlog";
 import SingleProduct from "./pages/SingleProduct";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ToastContainer
+        // limit={1}
+        containerId="bandita"
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

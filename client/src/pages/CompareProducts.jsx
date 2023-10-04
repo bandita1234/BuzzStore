@@ -11,7 +11,7 @@ const CompareProducts = () => {
     <div>
       <Meta title="Compare Products" />
       <BreadCrumb title="Compare Products" />
-      <h2>Compare Products</h2>
+      <h2 className="heading">Compare Products</h2>
       <div className="flex flex-wrap item-center sm:gap-5 lg:gap-10 lg:mx-10 mx-2">
       {/* Item 1 */}
         <div className=" relative w-1/2 sm-w-1/3 max-w-xs md:w-1/4 lg:w-1/6 h-full object-cover bg-box-background rounded-xl shadow-lg border-2 border-border-color cursor-pointer min-h-[400px]">
