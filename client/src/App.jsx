@@ -21,10 +21,8 @@ import { ToastContainer } from "react-toastify";
 const App = () => {
   return (
     <BrowserRouter>
-      <ToastContainer
-        // limit={1}
-        containerId="bandita"
-        position="top-right"
+     <ToastContainer
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -44,7 +42,7 @@ const App = () => {
           <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<SingleBlog />} />
-          <Route path="/compare-products" element={<CompareProducts />} />
+          <Route path="/compare" element={<CompareProducts />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

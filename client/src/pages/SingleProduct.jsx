@@ -41,30 +41,13 @@ const SingleProduct = () => {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        toast("Product link copied to clipboard!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast("Product link copied to clipboard!");
       })
       .catch((error) => {
-        toast.error("Sorry, Failed to Copy Product link now!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error("Sorry, Failed to Copy Product link now!");
       });
   };
+
   const getASingleProduct = () => {
     dispatch(getAProduct(product_id));
   };
@@ -84,16 +67,7 @@ const SingleProduct = () => {
   const uploadToCart = () => {
     // console.log("abcd");
     if (!color) {
-      toast.error("Please Select a Color!!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please Select a Color!");
     } else {
       dispatch(
         addToCart({
@@ -103,7 +77,7 @@ const SingleProduct = () => {
           quantity: quantity,
         })
       );
-      navigate("/cart");
+      // navigate("/cart");
     }
     // alert("Added to cart")
   };

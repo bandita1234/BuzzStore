@@ -40,7 +40,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-6">
           <div>
-            <Link to="/compare-products" className="flex items-center gap-1">
+            <Link to="/compare" className="flex items-center gap-1">
               <IoMdGitCompare size={"25px"} />
               <p className="hidden md:inline-block">
                 Compare <br /> Products

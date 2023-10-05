@@ -62,6 +62,14 @@ export const getCart = createAsyncThunk("auth/getcart", async (thunkAPI) => {
   }
 });
 
+export const deleteCart = createAsyncThunk("auth/deletecart" , async(id , thunkAPI) => {
+  try {
+    return await authService.deleteFromCart(id);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+})
+
 const getUserFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -169,14 +177,16 @@ export const authSlice = createSlice({
         //     toast.success("Product added to Cart");
         // }
 
-        if (action.payload) {
-          // state.cartProduct = action.payload;
-          toast.success("Product added to Cart");
-        }else{
-            // console.log(action);
-            state.isError = true;
-            toast.error("Sorry, Some error Occured!");
-        }
+        // if (action.payload) {
+        //   // state.cartProduct = action.payload;
+        //   toast.success("Product added to Cart");
+        // }
+        // else{
+        //     // console.log(action);
+        //     state.isError = true;
+        //     toast.error("Sorry, Some error Occured!");
+        // }
+        
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -192,9 +202,6 @@ export const authSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.cartItems = action.payload;
-        // if(state.isSuccess == true){
-        //     toast.success("User LoggedIn Successfully !");
-        // }
       })
       .addCase(getCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -204,7 +211,28 @@ export const authSlice = createSlice({
         // if(state.isError == true){
         //     toast.success("action.error");
         // }
-      });
+      }).addCase(deleteCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedCartProduct = action.payload;
+        console.log(action.payload);
+        if(action.payload){
+            toast.success("Product deleted from Cart !");
+        }
+      })
+      .addCase(deleteCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        if(state.isError == true){
+            toast.error("Sorry, Some Error Occured!");
+        }
+      });;
   },
 });
 

@@ -6,23 +6,26 @@ import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "../features/user/UserSlice";
+import { deleteCart, getCart } from "../features/user/UserSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
   // const [count, setCount] = useState("");
 
   const cartState = useSelector((state) => state.auth.cartItems);
-  console.log(cartState);
+  // console.log(cartState);
 
-  // const getCartItems = () => {
-  //   dispatch(getCart());
-  // };
+  const deletedCartProduct = (id) => {
+    dispatch(deleteCart(id));
+
+    setTimeout(() => {
+      dispatch(getCart());
+    }, 200);
+  };
 
   useEffect(() => {
     dispatch(getCart());
   }, []);
-
 
   return (
     <>
@@ -54,10 +57,13 @@ const Cart = () => {
                 </h3>
               </div>
 
-              {cartState?.length>0 ?
-                cartState?.map((item , idx) => {
+              {cartState?.length > 0 ? (
+                cartState?.map((item, idx) => {
                   return (
-                    <div key={idx} className="flex items-center hover:bg-[#4b6382b1] -mx-8 px-6 py-5">
+                    <div
+                      key={idx}
+                      className="flex items-center hover:bg-[#4b6382b1] -mx-8 px-6 py-5"
+                    >
                       <div className="flex w-2/5">
                         <div className="w-20">
                           <img
@@ -79,17 +85,19 @@ const Cart = () => {
                               <ul className="">
                                 <li
                                   className="m-1 h-5 w-5 rounded-full"
-                                  style={{ backgroundColor: `${item?.color?.title}` }}
+                                  style={{
+                                    backgroundColor: `${item?.color?.title}`,
+                                  }}
                                 ></li>
                               </ul>
                             </div>
                           </span>
-                          <Link
-                            to="#"
+                          <div
+                            onClick={() => deletedCartProduct(item?._id)}
                             className="font-semibold text-red text-xl w-8 h-8 rounded-full bg-background-color flex items-center justify-center"
                           >
                             <RiDeleteBin6Line />
-                          </Link>
+                          </div>
                         </div>
                       </div>
                       <div className="flex justify-center items-center w-1/5">
@@ -107,17 +115,19 @@ const Cart = () => {
                         <BiPlus size={20} />
                       </div>
                       <span className="text-center w-1/5 font-semibold text-sm">
-                      ₹{item?.price}
+                        ₹{item?.price}
                       </span>
                       <span className="text-center w-1/5 font-semibold text-sm">
-                      ₹{item?.price * item?.quantity}
+                        ₹{item?.price * item?.quantity}
                       </span>
                     </div>
                   );
                 })
-                : <h2 className="text-center text-2xl font-bold">Opps! Your Cart is Empty!🙁</h2>
-                }
-
+              ) : (
+                <h2 className="text-center text-2xl font-bold">
+                  Opps! Your Cart is Empty!🙁
+                </h2>
+              )}
 
               {/* <div className="flex items-center hover:bg-[#4b6382b1] -mx-8 px-6 py-5">
               <div className="flex w-2/5">
@@ -209,9 +219,7 @@ const Cart = () => {
             </div>
 
             <div id="summary" className="w-1/4 px-8 py-10">
-              <h1 className="heading m-0">
-                Order Summary
-              </h1>
+              <h1 className="heading m-0">Order Summary</h1>
               <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Items 3</span>
                 <span className="font-semibold text-sm">590$</span>

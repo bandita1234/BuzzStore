@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import watch_img from "../assets/watch_img.avif";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { getUserWishlist } from "../features/user/UserSlice";
 import { addToWishlist } from "../features/product/ProductSlice";
 
 const Wishlist = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getwishlist = () => {
@@ -36,11 +37,11 @@ const Wishlist = () => {
       {wishlistState?.length == 0 && <div className="text-xl">Oops! Your wishlist is empty. <Link to="/product" className="text-main-color">Shop here!</Link></div>}
         {wishlistState?.map((item, idx) => (
           <div key={idx} className=" relative w-1/2 sm-w-1/3 max-w-xs md:w-1/4 lg:w-1/6 h-full object-cover bg-box-background rounded-xl shadow-lg border-2 border-border-color cursor-pointer min-h-[300px]">
-            <div className="mb-3 relative p-1">
+            <div className="mb-3 relative p-1 h-[250px] w-full" onClick={()=>navigate(`/product/${item?._id}`)} >
               <img
                 src={item?.images[0]}
                 alt=""
-                className="h-full w-full rounded-xl"
+                className="h-full w-full object-cover rounded-lg"
               />
             </div>
             <Link
@@ -53,7 +54,7 @@ const Wishlist = () => {
               <p className="text-sm sm:text-lg font-semibold text-main-color">
                 {item?.brand}
               </p>
-              <h4 className="line-clamp-2">
+              <h4 className="line-clamp-1">
                 {/* Roadster Men Blue Analogue Watch MFB-PN-WTH-9710G (Onesize) by
               Myntra */}
                 {item.title}

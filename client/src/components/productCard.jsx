@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import watch_img from "../assets/watch_img.avif";
 import main_watch from "../assets/main_watch.avif";
 import { Link, useNavigate } from "react-router-dom";
-import {addToWishlist} from '../features/product/ProductSlice'
+import { addToWishlist } from "../features/product/ProductSlice";
 
 //React Icons
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BiShuffle, BiShoppingBag } from "react-icons/bi";
 import { AiOutlineEye } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { getUserWishlist } from "../features/user/UserSlice";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { item } = props;
   // console.log(item);
+  const [alreadyWishlist, setAlreadyWishlist] = useState(false);
+  // console.log("wishlist");
   const [showFirstImage, setShowFirstImage] = useState(true);
   const handleMouseEnter = () => {
     setShowFirstImage(false);
@@ -26,11 +29,32 @@ const ProductCard = (props) => {
     setShowFirstImage(true);
   };
 
-  const addProductToWishlist = (id) =>{
+  const addProductToWishlist = (id) => {
     // alert(id);
     dispatch(addToWishlist(id));
-  }
-  
+    {
+      alreadyWishlist ? 
+      toast.error("Product removed from wishlist!") : toast.success("Product added to wishlist!") 
+    }
+  };
+
+  const getwishlist = () => {
+    dispatch(getUserWishlist());
+  };
+  const wishlistState = useSelector((state) => state.auth?.wishlist?.wishlist);
+  console.log(wishlistState);
+
+  useEffect(() => {
+    getwishlist();
+
+    for (let index = 0; index < wishlistState?.length; index++) {
+      if (item?._id === wishlistState[index]?._id) {
+        setAlreadyWishlist(true);
+      }
+    }
+  }, []);
+
+
   return (
     <div className="px-1 py-2 sm:p-4 lg:w-1/4 w-1/2">
       <Link to={`/product/${item?._id}`}>
@@ -57,14 +81,28 @@ const ProductCard = (props) => {
             )}
           </div>
           <div className="lg:px-6 flex justify-evenly relative bottom-6">
-            <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center pt-1 hover:bg-main-color text-2xl transition-all ease-in-out duration-500"
-            onClick={(e)=>{addProductToWishlist(item?._id)}}>
+            <Link
+              className={`rounded-full w-10 h-10 flex justify-center items-center pt-1 hover:bg-main-color text-2xl transition-all ease-in-out duration-500 bg-${alreadyWishlist ? 'main-color' : 'box-background'}`}
+              onClick={() => {
+                setAlreadyWishlist(!alreadyWishlist);
+                addProductToWishlist(item?._id);
+              }}
+            >
               <IoMdHeartEmpty />
             </Link>
-            <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
+            <Link
+              // to={{
+              //   pathname: "/compare",
+              //   state: { item },
+              // }}
+              className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500"
+            >
               <BiShuffle />
             </Link>
-            <Link to={`/product/${item?._id}`} className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">
+            <Link
+              to={`/product/${item?._id}`}
+              className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500"
+            >
               <AiOutlineEye />
             </Link>
             <Link className="rounded-full bg-box-background w-10 h-10 flex justify-center items-center hover:bg-main-color text-2xl transition-all ease-in-out duration-500">

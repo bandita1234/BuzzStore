@@ -4,9 +4,15 @@ import Meta from "../components/Meta";
 
 import watch_img from "../assets/watch_img.avif";
 import {RxCross2} from 'react-icons/rx'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const CompareProducts = () => {
+const CompareProducts = (props) => {
+  const location = useLocation();
+  console.log(location);
+  // const { itemName, itemBrand } = location?.state || {};
+
+  // console.log(itemName);
+
   return (
     <div>
       <Meta title="Compare Products" />
