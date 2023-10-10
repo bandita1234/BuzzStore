@@ -4,15 +4,15 @@ const jwt = require("jsonwebtoken");
 const fetchUser = async (req, res, next) => {
   // console.log(req?.header("authToken"));
 
-  //Get the user from the jwt token and add id to req object
-
-  const token = req?.header("authToken"); //get the token(name-"auth-token") from the header
-  // console.log("TOKEN",token);
-  if (!token) {
-    res.status(401).send({ Error: "Please login to continue!" });
-  }
-
   try {
+    //Get the user from the jwt token and add id to req object
+
+    const token = req?.header("authToken"); //get the token(name-"auth-token") from the header
+    // console.log("TOKEN",token);
+    if (!token) {
+     return res.status(401).send({ Error: "Please login to continue!" });
+    }
+
     //If present,verify the token with the secret
     const data = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(data?.id);
@@ -30,7 +30,7 @@ const isAdmin = async (req, res, next) => {
   // console.log(adminUser);
   if (adminUser.role !== "admin") {
     res.send({ Error: "You are not the admin!" });
-  }else{
+  } else {
     next();
   }
 };

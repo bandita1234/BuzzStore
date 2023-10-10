@@ -16,7 +16,7 @@ const Color = (props) => {
                 } `}
                 style={{
                   backgroundColor: `${item?.title}`,
-                  boxShadow: color === item?._id ? "0 0 0 2px #0ec99e" : "none", // Adjust the spread radius (4px in this case)
+                  boxShadow: color === item?._id ? "0 0 0 2px #0ec99e" : "none", 
                 }}
                 key={idx}
               ></li>

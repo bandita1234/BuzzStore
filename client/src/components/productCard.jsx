@@ -17,7 +17,7 @@ const ProductCard = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { item } = props;
-  // console.log(item);
+  // console.log("item",item);
   const [alreadyWishlist, setAlreadyWishlist] = useState(false);
   // console.log("wishlist");
   const [showFirstImage, setShowFirstImage] = useState(true);
@@ -42,7 +42,7 @@ const ProductCard = (props) => {
     dispatch(getUserWishlist());
   };
   const wishlistState = useSelector((state) => state.auth?.wishlist?.wishlist);
-  console.log(wishlistState);
+  // console.log("wishlistState",wishlistState);
 
   useEffect(() => {
     getwishlist();
@@ -133,9 +133,10 @@ const ProductCard = (props) => {
                 activeColor="#ffd700"
               />
             </div>
-            <h2 className="text-base font-semibold my-1 sm:my-2">
-              <span> ₹{item?.price} </span>
-              <span className="mx-1 line-through text-main-color">₹2000</span>
+            <h2 className="text-base font-semibold my-1 sm:my-2 flex justify-center items-center gap-2">
+              <span className="text-main-color text-xl"> ₹{item?.dicountedPrice ? item?.dicountedPrice : item?.price} </span>
+              {item?.dicountedPrice && <span className="line-through text-[#83839b]">₹{item?.price}</span>}
+              {item?.dicountedPrice && <span className="text-red">({item?.price && Math.ceil((item?.price - item?.dicountedPrice)/item?.price * 100)}% Off) </span>}
             </h2>
           </div>
         </div>

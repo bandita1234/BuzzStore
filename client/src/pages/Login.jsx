@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../features/user/UserSlice";
-import Button from "../components/Button"
+import Button from "../components/Button";
 import FormButtons from "../components/FormButtons";
 
 const LoginSchema = yup.object({
@@ -23,11 +23,14 @@ const Login = () => {
       password: "",
     },
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      dispatch(loginUser(values));
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+    onSubmit: async(values) => {
+      const loginData = await dispatch(loginUser(values));
+      // console.log(loginData);
+      if(loginData.payload){
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
     },
   });
   return (
@@ -93,7 +96,7 @@ const Login = () => {
           </div>
 
           <div>
-            <FormButtons text="Login"/>
+            <FormButtons text="Login" type= "submit"/>
           </div>
 
           <div className="mt-4">

@@ -11,6 +11,7 @@ import Wishlist from "./pages/Wishlist";
 import CompareProducts from "./pages/CompareProducts";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
       </Routes>
     </BrowserRouter>

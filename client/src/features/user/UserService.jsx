@@ -23,7 +23,7 @@ const login = async (userData) => {
       return response.data;
     }
   } catch (error) {
-    console.log(error);
+    toast.error(error.response.data.Error);
   }
 };
 
@@ -65,6 +65,32 @@ const getCart = async () => {
   }
 };
 
+const createOrder = async(orderData)=>{
+  try {
+    const res = await axios.post(`${BASE_URL}/user/cart/createorder`, orderData, config);
+    console.log(res.data);
+    if (res.data) {
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+const updateCartQuantity = async(newQuantity) =>{
+  try {
+    // console.log("api call");
+    const response = await axios.patch(`${BASE_URL}/user/cart/updateQuantity`, newQuantity , config);
+    console.log(response);
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const deleteFromCart = async (id) => {
   try {
     const res = await axios.delete(
@@ -87,5 +113,7 @@ export const authService = {
   getWishlist,
   addToCart,
   getCart,
-  deleteFromCart
+  updateCartQuantity,
+  deleteFromCart,
+  createOrder
 };

@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
   if (!findUser) {
     return res
       .status(400)
-      .json({ Error: "please enter a correct credentials! " });
+      .json({ Error: "please enter correct credentials! " });
   }
   // In UserSchema we have defined isPasswordMatched function
   const passwordCompare = await findUser.isPasswordMatched(password);
@@ -478,8 +478,37 @@ const getUserCart = async (req, res) => {
   }
 };
 
-//ROUTE XXX(ADDED LATER) : Delete a single product from Cart
+//ROUTE XXX(ADDED LATER) : Update Product quantity in Cart
+const updateQuantity = async (req, res) => {
+  const { _id } = req?.user;
+  const { cartId } = req.body;
+  const { newQuantity } = req.body;
+  validateMongodbId(_id);
+  // console.log(cartId);
+  try {
+    if (newQuantity > 0) {
+      const newCart = await Cart.findByIdAndUpdate(cartId, {
+        quantity: newQuantity,
+      });
+      if (newCart) {
+        const cart = await Cart.find({ userId: _id })
+          .populate("productId")
+          .populate("color");
+        res.json(cart);
+      }
+    } else {
+      const cart = await Cart.find({ userId: _id })
+        .populate("productId")
+        .populate("color");
+      res.json(cart);
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal server Error!");
+  }
+};
 
+//ROUTE XXX(ADDED LATER) : Delete a single product from Cart
 const deleteProductFromCart = async (req, res) => {
   const { _id } = req?.user;
   const { cartId } = req.params;
@@ -560,44 +589,18 @@ const applyCoupon = async (req, res) => {
 
 //ROUTE 21: CREATE ORDER
 const createOrder = async (req, res) => {
-  const { COD, couponApplied } = req.body;
+  const { shippingInfo , orderItems , totalPrice , totalPriceAfterDiscount , paymentInfo } = req.body;
   const { _id } = req?.user;
   validateMongodbId(_id);
-  try {
-    if (!COD) res.send("Create cash order failed");
-    const user = await User.findOne({ _id });
-    let userCart = await Cart.findOne({ orderby: user._id });
+  try{
+    const order = await Order.create({
+      shippingInfo , orderItems , totalPrice , totalPriceAfterDiscount , paymentInfo,user:_id
+    })
+    res.json({
+      order,
+      success:true
+    })
 
-    let finalAmout = 0;
-    if (couponApplied && userCart.totalAfterDiscount) {
-      finalAmout = userCart.totalAfterDiscount;
-    } else {
-      finalAmout = userCart.cartTotal;
-    }
-    let newOrder = await new Order({
-      products: userCart.products,
-      paymentIntent: {
-        id: uniqid(),
-        method: "COD",
-        amount: finalAmout,
-        status: "Cash on Delivery",
-        created: Date.now(),
-        currency: "usd",
-      },
-      orderby: user._id,
-      orderStatus: "Cash on Delivery",
-    }).save();
-    let update = userCart.products.map((item) => {
-      return {
-        updateOne: {
-          filter: { _id: item.product._id },
-          update: { $inc: { quantity: -item.count, sold: +item.count } },
-        },
-      };
-    });
-    const updated = await Product.bulkWrite(update, {});
-    // res.json(updated)
-    res.json({ message: "success" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server Error!");
@@ -667,5 +670,6 @@ module.exports = {
   createOrder,
   getOrders,
   updateOrderStatus,
-  deleteProductFromCart
+  updateQuantity,
+  deleteProductFromCart,
 };

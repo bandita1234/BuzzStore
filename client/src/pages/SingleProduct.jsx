@@ -21,7 +21,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const product_id = location.pathname.split("/")[2];
-  // console.log(prodcuct_id);
+  console.log(product_id);
 
   const [ordedProduct, setOrdedProduct] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -77,7 +77,7 @@ const SingleProduct = () => {
           quantity: quantity,
         })
       );
-      // navigate("/cart");
+      toast.success("Product added to cart!");
     }
     // alert("Added to cart")
   };
@@ -109,20 +109,20 @@ const SingleProduct = () => {
       <div className="flex gap-4 md:flex-row flex-col">
         <div className=" flex-1 object-contain">
           {/* <img src={headphone_img} alt="" className="w-full h-full object-contain"/> */}
-          <div className="relative z-10">
+          <div className="relative z-10 flex justify-center">
             <ReactImageMagnify
               {...{
                 smallImage: {
                   alt: "Wristwatch by Ted Baker London",
                   // isFluidWidth: true,
-                  width: 700,
+                  width: 600,
                   height: 600,
                   src: singleProductState?.images[0],
                 },
                 largeImage: {
                   src: singleProductState?.images[0],
                   width: 1200,
-                  height: 1800,
+                  height: 1000,
                 },
               }}
             />

@@ -16,7 +16,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (userData ,thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
       const response = await authService.login(userData);
       if (response) {
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
         // navigate("/"); // Navigate to the home page using the passed navigate function
         return response;
       }
-     } catch (error) {
+    } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -62,13 +62,38 @@ export const getCart = createAsyncThunk("auth/getcart", async (thunkAPI) => {
   }
 });
 
-export const deleteCart = createAsyncThunk("auth/deletecart" , async(id , thunkAPI) => {
-  try {
-    return await authService.deleteFromCart(id);
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
+export const deleteCart = createAsyncThunk(
+  "auth/deletecart",
+  async (id, thunkAPI) => {
+    try {
+      return await authService.deleteFromCart(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-})
+);
+
+export const updateQuantity = createAsyncThunk(
+  "auth/updateQuantity",
+  async (newQuantity, thunkAPI) => {
+    try {
+      return await authService.updateCartQuantity(newQuantity);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const createOrder = createAsyncThunk(
+  "auth/create-order",
+  async (orderData, thunkAPI) => {
+    try {
+      return await authService.createOrder(orderData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 const getUserFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
@@ -125,22 +150,22 @@ export const authSlice = createSlice({
         if (action.payload) {
           localStorage.setItem("token", action.payload.token);
           toast.success("User LoggedIn Successfully !");
-        }else{
-            // console.log(action);
-            state.isError = true;
-            toast.error("Sorry, Some error Occured!");
-            // navigate("/");
+        } else {
+          // console.log(action);
+          state.isError = true;
+          // toast.error("Sorry, Some error Occured!");
+          // navigate("/");
         }
-
       })
-      
+
       .addCase(loginUser.rejected, (state, action) => {
+        // console.log(action);
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
         if (state.isError == true) {
-          toast.success("action.error");
+          toast.error(action.error);
         }
       })
 
@@ -186,7 +211,6 @@ export const authSlice = createSlice({
         //     state.isError = true;
         //     toast.error("Sorry, Some error Occured!");
         // }
-        
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoading = false;
@@ -211,7 +235,8 @@ export const authSlice = createSlice({
         // if(state.isError == true){
         //     toast.success("action.error");
         // }
-      }).addCase(deleteCart.pending, (state) => {
+      })
+      .addCase(deleteCart.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(deleteCart.fulfilled, (state, action) => {
@@ -220,8 +245,8 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.deletedCartProduct = action.payload;
         console.log(action.payload);
-        if(action.payload){
-            toast.success("Product deleted from Cart !");
+        if (action.payload) {
+          toast.error("Product deleted from Cart !");
         }
       })
       .addCase(deleteCart.rejected, (state, action) => {
@@ -229,10 +254,50 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-        if(state.isError == true){
-            toast.error("Sorry, Some Error Occured!");
+        if (state.isError == true) {
+          toast.error("Sorry, Some Error Occured!");
         }
-      });;
+      })
+      .addCase(updateQuantity.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateQuantity.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        // state.cartItems = state.cartItems.map((item) => {
+        //   if (item._id == action.payload._id) item.quantity = item.quantity + 1;
+        //   return item;
+        // });
+        state.cartItems = action.payload;
+
+        // if (action.payload) {
+        //   toast.success("Quantity Updated Successfully !");
+        // }
+      })
+      .addCase(updateQuantity.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      }).addCase(createOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.orderProducts = action.payload;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        // if(state.isError == true){
+        //     toast.success("action.error");
+        // }
+      });
   },
 });
 

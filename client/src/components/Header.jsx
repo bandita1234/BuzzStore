@@ -6,8 +6,11 @@ import { FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbCategory } from "react-icons/tb";
 import logo from "../assets/logo.png"
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const cartState = useSelector((state) => state.auth.cartItems);
+  // console.log("cartState",cartState);
   return (
     <>
       {/* First nav*/}
@@ -64,7 +67,8 @@ const Header = () => {
           <div>
             <Link to="/cart" className="flex items-center gap-1">
               <AiOutlineShoppingCart size={"30px"} />
-              <p className="hidden md:inline-block">Cart(2)</p>
+              <p className="hidden md:inline-block">Cart</p>
+              <span className="bg-main-color text-background-color font-bold px-2 rounded-lg relative bottom-4">{cartState?.length}</span>
             </Link>
           </div>
         </div>

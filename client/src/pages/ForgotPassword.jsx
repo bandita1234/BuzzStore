@@ -39,7 +39,7 @@ const ForgotPassword = () => {
             <div className="flex gap-4 justify-center items-center">
               {/* <button onClick={handleSubmit} className="mr-4">Send</button> */}
               <Button text= "Send" handleClick={handleSubmit} />
-              <Button handleClick={navigate("/login")} text="Cancel" />
+              <Button handleClick={()=>navigate("/login")} text="Cancel" />
             </div>
           </div>
         </div>

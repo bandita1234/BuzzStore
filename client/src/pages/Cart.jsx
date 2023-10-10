@@ -1,16 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import { BsArrowLeft } from "react-icons/bs";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCart, getCart } from "../features/user/UserSlice";
+import {
+  deleteCart,
+  getCart,
+  updateQuantity,
+} from "../features/user/UserSlice";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [count, setCount] = useState("");
+  const [totalCost, setTotalCost] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
+  const [cnt, setCnt] = useState(1);
+  // console.log(totalCost);
 
   const cartState = useSelector((state) => state.auth.cartItems);
   // console.log(cartState);
@@ -23,9 +31,26 @@ const Cart = () => {
     }, 200);
   };
 
+  const cartQuantity = (newQuantity) => {
+    dispatch(updateQuantity(newQuantity)).then(() => {
+      setCnt(cnt + 1);
+    });
+
+    // dispatch(getCart());
+  };
+
   useEffect(() => {
     dispatch(getCart());
   }, []);
+
+  useEffect(() => {
+    let sum = 0;
+    for (let index = 0; index < cartState?.length; index++) {
+      sum +=
+        Number(cartState[index]?.quantity) * Number(cartState[index]?.price);
+    }
+    setTotalCost(sum);
+  }, [cartState?.length, cnt]);
 
   return (
     <>
@@ -65,7 +90,12 @@ const Cart = () => {
                       className="flex items-center hover:bg-[#4b6382b1] -mx-8 px-6 py-5"
                     >
                       <div className="flex w-2/5">
-                        <div className="w-20">
+                        <div
+                          className="w-20"
+                          onClick={() =>
+                            navigate(`/product/${item?.productId?._id}`)
+                          }
+                        >
                           <img
                             className="h-24"
                             src={item?.productId?.images[0]}
@@ -101,7 +131,15 @@ const Cart = () => {
                         </div>
                       </div>
                       <div className="flex justify-center items-center w-1/5">
-                        <BiMinus size={20} />
+                        <BiMinus
+                          size={20}
+                          onClick={() =>
+                            cartQuantity({
+                              cartId: item?._id,
+                              newQuantity: item?.quantity - 1,
+                            })
+                          }
+                        />
 
                         <input
                           className="mx-2 border text-center w-8 bg-customTransparent border-main-color p-2"
@@ -112,7 +150,15 @@ const Cart = () => {
                           value={item?.quantity}
                         />
 
-                        <BiPlus size={20} />
+                        <BiPlus
+                          size={20}
+                          onClick={() =>
+                            cartQuantity({
+                              cartId: item?._id,
+                              newQuantity: item?.quantity + 1,
+                            })
+                          }
+                        />
                       </div>
                       <span className="text-center w-1/5 font-semibold text-sm">
                         ₹{item?.price}
@@ -221,11 +267,13 @@ const Cart = () => {
             <div id="summary" className="w-1/4 px-8 py-10">
               <h1 className="heading m-0">Order Summary</h1>
               <div className="flex justify-between mt-10 mb-5">
-                <span className="font-semibold text-sm uppercase">Items 3</span>
-                <span className="font-semibold text-sm">590$</span>
+                <span className="font-semibold text-sm uppercase">
+                  Items {cartState?.length}{" "}
+                </span>
+                <span className="font-semibold text-sm">₹ {totalCost}</span>
               </div>
 
-              <div className="py-10">
+              <div className="py-6">
                 <label
                   htmlFor="promo"
                   className="font-semibold inline-block mb-3 text-sm uppercase"
@@ -242,12 +290,27 @@ const Cart = () => {
               <button className="bg-[#db7e7e] hover:bg-red px-5 py-2 text-sm uppercase">
                 Apply
               </button>
+
+              <div className="flex justify-between items-center pt-6">
+              <h3 className="font-semibold text-xs  text-main-color">Discount on MRP</h3>
+              <span>₹ 0</span>
+              </div>
+              <div className="flex justify-between items-center">
+              <h3 className="font-semibold text-xs  text-main-color">Coupon Discount</h3>
+              <span>₹ 0</span>
+              </div>
+              <div className="flex justify-between items-center">
+              <h3 className="font-semibold text-xs  text-main-color">Shipping Charges</h3>
+              <span>₹ 0</span>
+              </div>
+
+
               <div className="border-t mt-8">
                 <div className="flex font-semibold justify-between items-center py-6 text-sm uppercase">
                   <span>Total cost</span>
-                  <span className="text-xl text-main-color">$600</span>
+                  <span className="text-xl text-main-color">₹ {totalCost}</span>
                 </div>
-                <button className="bg-[#42ab92] font-semibold hover:bg-main-color py-3 text-sm text-white uppercase w-full">
+                <button className="bg-[#42ab92] font-semibold hover:bg-main-color py-3 text-sm text-white uppercase w-full" onClick={()=>navigate("/checkout")}>
                   Checkout
                 </button>
               </div>

@@ -25,9 +25,11 @@ const {
   getOrders,
   updateOrderStatus,
   deleteProductFromCart,
+  updateQuantity,
 } = require("../controllers/userCtrl");
 const { body } = require("express-validator");
 const { fetchUser, isAdmin } = require("../middlewires/fetchUser");
+const { checkOut, paymentVerification } = require("../controllers/paymentCtrl");
 
 router.post(
   "/register",
@@ -64,19 +66,25 @@ router.post(
 router.post("/admin-login", loginAdmin);
 router.post("/cart", fetchUser, userCart);
 router.post("/cart/applycoupon", fetchUser, applyCoupon);
+
+router.post("/order/checkout", fetchUser, checkOut);
+router.post("/order/paymentVerification", fetchUser, paymentVerification);
+
+
 router.post("/cart/createorder", fetchUser, createOrder);
 router.get("/getcart", fetchUser, getUserCart);
 router.put("/password", fetchUser, updatePassword);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
-router.put("/update-order/:id",fetchUser, isAdmin, updateOrderStatus);
+// router.put("/update-order/:id",fetchUser, isAdmin, updateOrderStatus);
 router.get("/getusers", getAllUsers);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 router.get("/wishlist", fetchUser, getWishlist);
-router.get("/cart/getorders",fetchUser,getOrders)
+// router.get("/cart/getorders",fetchUser,getOrders)
 router.put("/save-address", fetchUser, saveAddress);
 router.get("/:id", fetchUser, isAdmin, getaUser);
+router.patch("/cart/updateQuantity", fetchUser, updateQuantity);
 router.delete("/cart/delete/:cartId", fetchUser, deleteProductFromCart);
 router.delete("/emptycart", fetchUser, emptyCart);
 router.delete("/:id", deleteUser);
