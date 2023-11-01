@@ -3,6 +3,8 @@ import { authService } from "./UserService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+// const navigate = useNavigate();
+
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
@@ -21,7 +23,7 @@ export const loginUser = createAsyncThunk(
       const response = await authService.login(userData);
       if (response) {
         localStorage.setItem("token", response.token);
-        toast.success("User LoggedIn Successfully !");
+        // toast.success("User LoggedIn Successfully !");
         // navigate("/"); // Navigate to the home page using the passed navigate function
         return response;
       }
@@ -95,6 +97,14 @@ export const createOrder = createAsyncThunk(
   }
 );
 
+export const getOrders = createAsyncThunk("auth/getorder", async (thunkAPI) => {
+  try {
+    return await authService.getOrders();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 const getUserFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
@@ -120,10 +130,18 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createUser = action.payload;
-        if (state.isSuccess == true) {
+        // state.createUser = action.payload;
+
+        // console.log("payload",action.payload);
+
+        if (action.payload) {
           toast.success("User Created Successfully !");
+          // navigate("/login");
         }
+        // else{
+        //   toast.error("Please enter Correct Credentials");
+        //   console.log(action);
+        // }
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -131,7 +149,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isError == true) {
-          toast.success("action.error");
+          toast.success(action.error);
         }
       })
       .addCase(loginUser.pending, (state) => {
@@ -143,7 +161,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload;
         // if (state.isSuccess == true) {
-        //   // console.log(action);
+          console.log(action);
         //   localStorage.setItem("token", action.payload.token);
         //   toast.success("User LoggedIn Successfully !");
         // }
@@ -280,7 +298,8 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      }).addCase(createOrder.pending, (state) => {
+      })
+      .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
@@ -297,6 +316,21 @@ export const authSlice = createSlice({
         // if(state.isError == true){
         //     toast.success("action.error");
         // }
+      })
+      .addCase(getOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.orderedItems = action.payload;
+      })
+      .addCase(getOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
       });
   },
 });

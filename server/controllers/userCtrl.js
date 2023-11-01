@@ -196,6 +196,7 @@ const logout = async (req, res) => {
     res.status(500).send("Internal server Error!");
   }
 };
+
 //ROUTE 6: UPDATE A USER
 const updateUser = async (req, res) => {
   try {
@@ -612,10 +613,10 @@ const getOrders = async (req, res) => {
   const { _id } = req.user;
   validateMongodbId(_id);
   try {
-    const userorders = await Order.findOne({ orderby: _id })
-      .populate("products.product")
-      .populate("orderby")
-      .exec();
+    const userorders = await Order.find({ user: _id }).populate("orderItems.product").populate("orderItems.color")
+      // .populate("products.product")
+      // .populate("orderby")
+      // .exec();
     res.json(userorders);
   } catch (error) {
     console.error(error.message);
@@ -624,27 +625,27 @@ const getOrders = async (req, res) => {
 };
 
 //ROUTE 23: UPDATE ORDER STATUS
-const updateOrderStatus = async (req, res) => {
-  const { status } = req.body;
-  const { id } = req.params;
-  validateMongodbId(id);
-  try {
-    const updateOrderStatus = await Order.findByIdAndUpdate(
-      id,
-      {
-        orderStatus: status,
-        paymentIntent: {
-          status: status,
-        },
-      },
-      { new: true }
-    );
-    res.json(updateOrderStatus);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Internal server Error!");
-  }
-};
+// const updateOrderStatus = async (req, res) => {
+//   const { status } = req.body;
+//   const { id } = req.params;
+//   validateMongodbId(id);
+//   try {
+//     const updateOrderStatus = await Order.findByIdAndUpdate(
+//       id,
+//       {
+//         orderStatus: status,
+//         paymentIntent: {
+//           status: status,
+//         },
+//       },
+//       { new: true }
+//     );
+//     res.json(updateOrderStatus);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).send("Internal server Error!");
+//   }
+// };
 
 module.exports = {
   createUser,
@@ -669,7 +670,7 @@ module.exports = {
   applyCoupon,
   createOrder,
   getOrders,
-  updateOrderStatus,
+  // updateOrderStatus,
   updateQuantity,
   deleteProductFromCart,
 };

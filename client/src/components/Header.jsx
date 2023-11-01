@@ -1,25 +1,49 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { IoMdGitCompare, IoMdHeartEmpty } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbCategory } from "react-icons/tb";
 import logo from "../assets/logo.png"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../features/user/UserSlice";
 
 const Header = () => {
-  const cartState = useSelector((state) => state.auth.cartItems);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cartState = useSelector((state) => state?.auth?.cartItems);
   // console.log("cartState",cartState);
+
+  const authState = useSelector((state) => state?.auth?.user);
+  // console.log("authState",authState);
+
+  const token = localStorage.getItem("token");
+  // console.log(token);
+
+  const handleLogout = ()=>{
+    localStorage.clear();
+    navigate("/login");
+    location.reload();
+    // setTimeout(() => {
+    //   toast.warn("Logged Out!")
+    // }, 300);
+  }
+
+  useEffect(() => {
+    dispatch(getCart());
+    // dispatch(getU)
+  }, []);
+
   return (
     <>
       {/* First nav*/}
       <div className="flex bg-[#12263c] gap-3 md:justify-between md:p-2">
         <div>
-          <p>Free Shipping Over Rs5000 and free Returns✨</p>
+          <p>Free Shipping Over ₹500 and free Returns✨</p>
         </div>
         <div>
-          <p>Helpline : +91 8114852522</p>
+          <p>Helpline : +91 8917620421</p>
         </div>
       </div>
       <hr />
@@ -59,9 +83,10 @@ const Header = () => {
             </Link>
           </div>
           <div>
-            <Link to="/login" className="flex items-center gap-1">
+            <Link to={token == null ? "/login" : ""} className="flex items-center gap-1">
               <FaRegUser size={"25px"} />
-              <p className="hidden md:inline-block">Login</p>
+              {authState || token ? <p className="hidden md:inline-block">Welcome <br /> {authState?.firstname && <span className="text-main-color font-semibold ml-2">{authState?.firstname}</span> } </p> : <p className="hidden md:inline-block">Login</p>}
+              
             </Link>
           </div>
           <div>
@@ -85,11 +110,13 @@ const Header = () => {
               <option value="meat">Meat</option>
             </select>
         </div>
-        <div className="flex items-center gap-2 lg:gap-6">
+        <div className="flex items-center flex-wrap gap-3 lg:gap-6 text-product-descripion lg:text-md uppercase">
           <Link to="/">Home</Link>
           <Link to="/product">Our Store</Link>
           <Link to="/blogs">Blogs</Link>
           <Link to="/contact">Contact</Link>
+          <Link to="/orders">Orders</Link>
+          {token && <Link className="text-red" onClick={handleLogout}>Logout</Link> }
         </div>
       </div>
     </>

@@ -81,7 +81,7 @@ router.get("/getusers", getAllUsers);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 router.get("/wishlist", fetchUser, getWishlist);
-// router.get("/cart/getorders",fetchUser,getOrders)
+router.get("/cart/getorders",fetchUser,getOrders)
 router.put("/save-address", fetchUser, saveAddress);
 router.get("/:id", fetchUser, isAdmin, getaUser);
 router.patch("/cart/updateQuantity", fetchUser, updateQuantity);

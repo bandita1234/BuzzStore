@@ -9,9 +9,17 @@ const register = async (userData) => {
     console.log(response);
     if (response.data) {
       localStorage.setItem("customer", JSON.stringify(response.data));
+      // navigate("/login");
+      return response.data;
     }
+
   } catch (error) {
     console.log(error);
+    if(error.response.data.error){
+      toast.error(error.response.data.error);
+    }else{
+      toast.error(error.response.data.errors[0].msg);
+    }
   }
 };
 
@@ -23,6 +31,7 @@ const login = async (userData) => {
       return response.data;
     }
   } catch (error) {
+    console.log(error);
     toast.error(error.response.data.Error);
   }
 };
@@ -65,18 +74,6 @@ const getCart = async () => {
   }
 };
 
-const createOrder = async(orderData)=>{
-  try {
-    const res = await axios.post(`${BASE_URL}/user/cart/createorder`, orderData, config);
-    console.log(res.data);
-    if (res.data) {
-      return res.data;
-    }
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-}
 
 const updateCartQuantity = async(newQuantity) =>{
   try {
@@ -107,6 +104,32 @@ const deleteFromCart = async (id) => {
   }
 };
 
+const createOrder = async(orderData)=>{
+  try {
+    const res = await axios.post(`${BASE_URL}/user/cart/createorder`, orderData, config);
+    console.log(res.data);
+    if (res.data) {
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+const getOrders = async()=>{
+  try {
+    const res = await axios.get(`${BASE_URL}/user/cart/getorders`, config);
+    // console.log(res.data);
+    if (res.data) {
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export const authService = {
   register,
   login,
@@ -115,5 +138,6 @@ export const authService = {
   getCart,
   updateCartQuantity,
   deleteFromCart,
-  createOrder
+  createOrder,
+  getOrders
 };

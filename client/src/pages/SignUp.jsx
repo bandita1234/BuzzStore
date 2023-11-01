@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -20,6 +20,7 @@ const SignUpSchema = yup.object({
 });
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -31,8 +32,15 @@ const SignUp = () => {
       password: "",
     },
     validationSchema: SignUpSchema,
-    onSubmit: (values) => {
-      dispatch(registerUser(values));
+    onSubmit: async(values) => {
+      // console.log(values);
+      const signupData = await dispatch(registerUser(values));
+      // console.log(signupData);
+      if(signupData.payload){
+        // setTimeout(() => {
+          navigate("/login");
+        // }, 1000);
+      }
     },
   });
   return (
@@ -57,7 +65,7 @@ const SignUp = () => {
               onBlur={formik.handleBlur("firstname")}
             />
             <label
-              htmlhtmlFor="firstname"
+              htmlFor="firstname"
               className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
             >
               First Name
@@ -80,7 +88,7 @@ const SignUp = () => {
               onBlur={formik.handleBlur("lastname")}
             />
             <label
-              htmlhtmlFor="lastname"
+              htmlFor="lastname"
               className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
             >
               Last Name
@@ -102,7 +110,7 @@ const SignUp = () => {
               onBlur={formik.handleBlur("email")}
             />
             <label
-              htmlhtmlFor="email"
+              htmlFor="email"
               className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
             >
               Email
@@ -124,7 +132,7 @@ const SignUp = () => {
               onBlur={formik.handleBlur("mobile")}
             />
             <label
-              htmlhtmlFor="mobile"
+              htmlFor="mobile"
               className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
             >
               Mobile Number
@@ -149,7 +157,7 @@ const SignUp = () => {
               onBlur={formik.handleBlur("password")}
             />
             <label
-              htmlhtmlFor="password"
+              htmlFor="password"
               className="absolute text-sm text-text-color bg-box-background duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
             >
               Password
@@ -160,7 +168,7 @@ const SignUp = () => {
           </div>
 
           <div>
-          <FormButtons text="SignUp"/>
+          <FormButtons text="SignUp" type= "submit"/>
           </div>
 
           <div className="mt-4">

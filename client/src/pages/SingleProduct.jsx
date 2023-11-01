@@ -21,7 +21,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const product_id = location.pathname.split("/")[2];
-  console.log(product_id);
+  // console.log(product_id);
 
   const [ordedProduct, setOrdedProduct] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
