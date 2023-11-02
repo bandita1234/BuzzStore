@@ -21,6 +21,7 @@ import { ToastContainer } from "react-toastify";
 import Orders from "./pages/Orders";
 
 import { PrivateRoutes } from "./routing/PrivateRoute";
+import { OpenRoutes } from "./routing/OpenRoute";
 
 
 const App = () => {
@@ -50,8 +51,8 @@ const App = () => {
           <Route path="/compare" element={<CompareProducts />} />
           <Route path="/wishlist" element={<PrivateRoutes><Wishlist /></PrivateRoutes>} />
           <Route path="/orders" element={<PrivateRoutes><Orders /></PrivateRoutes>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<OpenRoutes><Login /></OpenRoutes>} />
+          <Route path="/signup" element={<OpenRoutes><SignUp /></OpenRoutes>} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/cart" element={<PrivateRoutes><Cart /></PrivateRoutes>} />

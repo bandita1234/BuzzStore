@@ -1,9 +1,8 @@
 import React from 'react'
+import { Navigate } from 'react-router-dom';
 
-const OpenRoute = () => {
-  return (
-    <div>OpenRoute</div>
-  )
+export const OpenRoutes = ({children}) =>{
+    const getTokenFromLocalStorage = localStorage.getItem("token");
+    console.log("token",getTokenFromLocalStorage);
+    return !getTokenFromLocalStorage ? children : (<Navigate to="/" replace={true} />)
 }
-
-export default OpenRoute

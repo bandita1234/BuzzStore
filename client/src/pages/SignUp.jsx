@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
@@ -10,6 +10,8 @@ import * as yup from "yup";
 import { registerUser } from "../features/user/UserSlice";
 import Button from "../components/Button";
 import FormButtons from "../components/FormButtons";
+
+import logo from "../assets/logo.png"
 
 const SignUpSchema = yup.object({
   firstname: yup.string().required("First Name is required !"),
@@ -43,6 +45,8 @@ const SignUp = () => {
       }
     },
   });
+
+  const [openPassword, setOpenPassword] = useState(false);
   return (
     <>
       <Meta title="SignUp" />
@@ -52,6 +56,9 @@ const SignUp = () => {
           className="md:w-1/3 bg-box-background text-center p-6 m-auto rounded-xl space-y-2"
           onSubmit={formik.handleSubmit}
         >
+         <div className="w-1/2 m-auto mb-4">
+          <img src={logo} alt="" />
+        </div>
           <h2 className="heading">Create Account!</h2>
           <div className="relative">
             <input
@@ -143,12 +150,16 @@ const SignUp = () => {
           </div>
 
           <div className="relative">
-            <span className="absolute right-3 top-3">
-              <AiOutlineEye size={"24px"} />
+          <span className="absolute right-3 top-3" onClick={()=>setOpenPassword(!openPassword)}>
+              {openPassword ? (
+                <AiOutlineEye size={"24px"} />
+              ) : (
+                <AiOutlineEyeInvisible size={"24px"}/>
+              )}
             </span>
             <input
               className="block px-2.5 lg:pb-2.5 pt-4 w-full text-sm bg-customTransparent rounded-lg border-2 border-main-color appearance-none focus:outline-none focus:ring-0 peer"
-              type="password"
+              type={openPassword ? "text" : "password"}
               placeholder=" "
               id="password"
               name="password"

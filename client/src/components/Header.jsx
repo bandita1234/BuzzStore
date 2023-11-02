@@ -105,9 +105,11 @@ const Header = () => {
             <TbCategory size={"25px"} />
             <select className="hidden lg:inline-block lg:w-60 bg-background-color">
               <option className="disabled hidden" value="">Shop Categories</option>
-              <option value="fruit">Fruit</option>
-              <option value="vegetable">Vegetable</option>
-              <option value="meat">Meat</option>
+              <option value="fruit">Watch</option>
+              <option value="vegetable">Laptop</option>
+              <option value="meat">Mobile</option>
+              <option value="meat">Television</option>
+              <option value="meat">Speakers</option>
             </select>
         </div>
         <div className="flex items-center flex-wrap gap-3 lg:gap-6 text-product-descripion lg:text-md uppercase">
